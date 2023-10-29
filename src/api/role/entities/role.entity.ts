@@ -1,8 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Role } from 'prisma/prisma-client'
+import { BaseEntity } from "src/common/entities/base.entity";
 
-export class RoleEntity implements Role {
+export class RoleEntity extends BaseEntity implements Role {
     @ApiProperty() id: number;
     @ApiProperty() name: string;
-    @ApiProperty({ required: false, nullable: true }) default: boolean;
+    @ApiProperty({ required: false, default: false }) default: boolean;
 }
