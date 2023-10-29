@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { RoleModule } from 'src/role/role.module';
+import { AppController } from './controller/app.controller';
+import { AppService } from './service/app.service';
+import { RoleModule } from '../role/role.module';
 
 @Module({
   imports: [RoleModule],
