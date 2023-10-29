@@ -30,6 +30,7 @@ async function main() {
         create: {
             email: 'sa.ghofraniivari@gmail.com',
             password: '123',
+            username: 'saeed',
             roles: {
                 create: [{
                     role: { connect: { id: userRole.id } }
