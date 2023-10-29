@@ -6,33 +6,42 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-    // Create the "admin" role if it doesn't exist or fetch it if it does
-    let role = await prisma.role.findFirst({
+    const adminRole = await prisma.role.upsert({
         where: { name: 'admin' },
+        update: {},
+        create: {
+            name: 'admin',
+        }
     });
 
-    if (!role) {
-        role = await prisma.role.create({
-            data: {
-                name: 'admin',
-            },
-        });
-    }
+    const userRole = await prisma.role.upsert({
+        where: { name: 'user' },
+        update: {},
+        create: {
+            name: 'user',
+            default: true
+        }
+    });
 
     // Create the user and associate the "admin" role
-    const user = await prisma.user.create({
-        data: {
+    const user = await prisma.user.upsert({
+        where: { email: 'sa.ghofraniivari@gmail.com' },
+        update: {},
+        create: {
             email: 'sa.ghofraniivari@gmail.com',
             password: '123',
             roles: {
                 create: [{
-                    role: { connect: { id: role.id } }
+                    role: { connect: { id: userRole.id } }
+                },
+                {
+                    role: { connect: { id: adminRole.id } }
                 }]
             }
-        },
+        }
     });
 
-    console.log({ user, role });
+    console.log({ user, adminRole, userRole });
 }
 
 // Execute the main function
