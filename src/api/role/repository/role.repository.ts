@@ -2,12 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRoleDto } from '../dto/create-role.dto';
 import { UpdateRoleDto } from '../dto/update-role.dto';
-import { Role } from '@prisma/client';
 import { BaseRepository } from 'src/common/abstract/repository.abstract';
+import { PaginatedResult } from 'src/common/pagination/interface/result.interface';
+import { PaginationService } from 'src/common/pagination/service/create.service';
+import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class RoleRepository extends BaseRepository<Role, CreateRoleDto, UpdateRoleDto> {
-    constructor(protected prisma: PrismaService) {
+    constructor(
+        protected prisma: PrismaService,
+        private paginationService: PaginationService
+    ) {
         super(prisma);
     }
 
@@ -34,4 +40,13 @@ export class RoleRepository extends BaseRepository<Role, CreateRoleDto, UpdateRo
     removeRole(id: number) {
         return this.remove(id);
     }
+
+    pagination(
+        paginationQueryDto: PaginationQueryDto
+    ): Promise<PaginatedResult<Role>> {
+        return this.paginationService.paginate(this.prisma.role,
+            paginationQueryDto
+        );
+    }
 }
+

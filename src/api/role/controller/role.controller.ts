@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RoleService } from '../service/role.service';
 import { CreateRoleDto } from '../dto/create-role.dto';
 import { UpdateRoleDto } from '../dto/update-role.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RoleEntity } from '../entities/role.entity';
+import { Prisma } from '@prisma/client';
+import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 
 @Controller('role')
 @ApiTags('roles')
@@ -20,6 +22,11 @@ export class RoleController {
   @ApiOkResponse({ type: RoleEntity, isArray: true })
   findAll() {
     return this.roleService.findAll();
+  }
+
+  @Get('page')
+  pagination(@Query() paginationQueryDto: PaginationQueryDto) {
+    return this.roleService.pagination(paginationQueryDto);
   }
 
   @Get(':id')

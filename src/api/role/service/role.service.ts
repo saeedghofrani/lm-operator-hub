@@ -3,7 +3,8 @@ import { CreateRoleDto } from '../dto/create-role.dto';
 import { UpdateRoleDto } from '../dto/update-role.dto';
 import { RoleRepository } from '../repository/role.repository';
 import { BaseService } from 'src/common/abstract/service.abstract';
-import { Role } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
+import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 
 @Injectable()
 export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto> {
@@ -48,6 +49,22 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
       return this.roleRepository.removeRole(id);
     } catch (error) {
       throw error
+    }
+  }
+
+  async pagination(
+    paginationQueryDto: PaginationQueryDto
+  ) {
+    try {
+      if (paginationQueryDto.where) {
+        let whereCondition = {
+          id: +paginationQueryDto.where.id
+        };
+        paginationQueryDto.where = whereCondition;
+      }
+      return this.roleRepository.pagination(paginationQueryDto)
+    } catch (error) {
+      throw error 
     }
   }
 }
