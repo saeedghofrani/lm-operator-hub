@@ -33,6 +33,10 @@ export class RoleRepository extends BaseRepository<Role, CreateRoleDto, UpdateRo
         return this.findOne(id);
     }
 
+    findDefaultRole() {
+        return this.prisma.role.findFirst({where: { default: true }});
+    }
+
     updateRole(id: number, updateRoleDto: UpdateRoleDto) {
         return this.update(id, updateRoleDto);
     }

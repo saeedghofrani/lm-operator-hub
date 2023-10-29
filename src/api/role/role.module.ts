@@ -9,5 +9,6 @@ import { PaginationService } from 'src/common/pagination/service/create.service'
   imports: [PrismaModule],
   controllers: [RoleController],
   providers: [RoleService, RoleRepository, PaginationService],
+  exports: [RoleService]
 })
 export class RoleModule {}

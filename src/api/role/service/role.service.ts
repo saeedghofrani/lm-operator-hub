@@ -36,6 +36,14 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     }
   }
 
+  async findDefaultRole() {
+    try {
+      return this.roleRepository.findDefaultRole();
+    } catch (error) {
+      throw error
+    }
+  }
+
   async update(id: number, updateRoleDto: UpdateRoleDto) {
     try {
       return this.roleRepository.updateRole(id, updateRoleDto);
@@ -58,7 +66,7 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     try {
       if (paginationQueryDto.where) {
         let whereCondition = {
-          id: +paginationQueryDto.where.id
+          id: +paginationQueryDto.where.id || undefined
         };
         paginationQueryDto.where = whereCondition;
       }
