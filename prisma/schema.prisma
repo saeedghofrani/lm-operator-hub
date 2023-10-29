@@ -38,13 +38,13 @@ model RoleUser {
 }
 
 model Product {
-  id            Int       @id @default(autoincrement())
-  name          String
-  assignee      User      @relation(fields: [userId], references: [id])
-  executionTime Int
-  userId        Int
-  deleted       DateTime?
-  Order         Order[]
+  id           Int       @id @default(autoincrement())
+  name         String
+  assignee     User      @relation(fields: [userId], references: [id])
+  durationTime Int
+  userId       Int
+  deleted      DateTime?
+  Order        Order[]
 }
 
 model Order {
