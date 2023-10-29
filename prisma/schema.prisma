@@ -13,6 +13,7 @@ model User {
   id       Int        @id @default(autoincrement())
   email    String     @unique
   password String
+  deleted  DateTime?
   roles    RoleUser[]
   Product  Product[]
   Order    Order[]
@@ -22,6 +23,7 @@ model Role {
   id      Int        @id @default(autoincrement())
   name    String     @unique
   default Boolean    @default(false)
+  deleted DateTime?
   User    RoleUser[]
 }
 
@@ -35,21 +37,23 @@ model RoleUser {
 }
 
 model Product {
-  id            Int     @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   name          String
-  assignee      User    @relation(fields: [userId], references: [id])
+  assignee      User      @relation(fields: [userId], references: [id])
   executionTime Int
   userId        Int
+  deleted       DateTime?
   Order         Order[]
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  orderNumber String   @unique
-  product     Product  @relation(fields: [productId], references: [id])
-  assignedTo  User     @relation(fields: [userId], references: [id])
+  id          Int       @id @default(autoincrement())
+  orderNumber String    @unique
+  product     Product   @relation(fields: [productId], references: [id])
+  assignedTo  User      @relation(fields: [userId], references: [id])
   orderTime   DateTime
   dueTime     DateTime
+  deleted     DateTime?
   productId   Int
   userId      Int
 }
