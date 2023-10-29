@@ -5,11 +5,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class RoleService {
-  
-  constructor(private prisma: PrismaService) {}
+
+  constructor(private prisma: PrismaService) { }
 
   create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+    return this.prisma.role.create({ data: createRoleDto });
   }
 
   findAll() {
@@ -21,10 +21,13 @@ export class RoleService {
   }
 
   update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+    return this.prisma.role.update({
+      where: { id },
+      data: updateRoleDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} role`;
+    return this.prisma.role.delete({ where: { id } });
   }
 }
