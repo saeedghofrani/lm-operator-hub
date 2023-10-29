@@ -1,33 +1,53 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from '../dto/create-role.dto';
 import { UpdateRoleDto } from '../dto/update-role.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { RoleRepository } from '../repository/role.repository';
+import { BaseService } from 'src/common/abstract/service.abstract';
+import { Role } from '@prisma/client';
 
 @Injectable()
-export class RoleService {
-
-  constructor(private prisma: PrismaService) { }
-
-  create(createRoleDto: CreateRoleDto) {
-    return this.prisma.role.create({ data: createRoleDto });
+export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto> {
+  constructor(private roleRepository: RoleRepository) {
+    super(roleRepository);
   }
 
-  findAll() {
-    return this.prisma.role.findMany({});
+  async create(createRoleDto: CreateRoleDto) {
+    try {
+      return this.roleRepository.createRole(createRoleDto);
+    } catch (error) {
+      throw error
+    }
   }
 
-  findOne(id: number) {
-    return this.prisma.role.findUnique({ where: { id } });
+  async findAll() {
+    try {
+      return this.roleRepository.findAllRole();
+    } catch (error) {
+      throw error
+    }
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return this.prisma.role.update({
-      where: { id },
-      data: updateRoleDto,
-    });
+  async findOne(id: number) {
+    try {
+      return this.roleRepository.findOneRole(id);
+    } catch (error) {
+      throw error
+    }
   }
 
-  remove(id: number) {
-    return this.prisma.role.delete({ where: { id } });
+  async update(id: number, updateRoleDto: UpdateRoleDto) {
+    try {
+      return this.roleRepository.updateRole(id, updateRoleDto);
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async remove(id: number) {
+    try {
+      return this.roleRepository.removeRole(id);
+    } catch (error) {
+      throw error
+    }
   }
 }
