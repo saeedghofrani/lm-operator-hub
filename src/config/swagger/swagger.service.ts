@@ -48,7 +48,7 @@ export class SwaggerConfigService {
         operationsSorter: 'alpha',
         docExpansion: 'none',
       },
-      customSiteTitle: 'dig',
+      customSiteTitle: 'mini project',
     };
 
     const document = SwaggerModule.createDocument(app, config, options);
