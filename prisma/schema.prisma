@@ -1,0 +1,86 @@
+// Prisma schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:123@localhost:5432/lcmarket?schema=public"
+}
+
+model User {
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
+  password String
+  username String
+  deleted  DateTime?
+  roles    RoleUser[]
+  Product  Product[]
+  Order    Order[]
+}
+
+model RoleUser {
+  userId Int
+  roleId Int
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
+}
+
+model Product {
+  id           Int       @id @default(autoincrement())
+  name         String    @unique
+  assignee     User      @relation(fields: [userId], references: [id])
+  durationTime Int
+  userId       Int
+  deleted      DateTime?
+  Order        Order[]
+}
+
+model Order {
+  id          Int       @id @default(autoincrement())
+  orderNumber String    @unique
+  product     Product   @relation(fields: [productId], references: [id])
+  assignedTo  User      @relation(fields: [userId], references: [id])
+  orderTime   DateTime
+  dueTime     DateTime
+  deleted     DateTime?
+  productId   Int
+  userId      Int
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  default     Boolean      @default(false)
+  deleted     DateTime?
+  User        RoleUser[]
+  permissions Permission[]
+}
+
+model Permission {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  deleted DateTime?
+  roles   Role[]
+  routes  Route[]
+}
+
+model Route {
+  id          Int           @id @default(autoincrement())
+  address     String
+  method      RequestMethod
+  description String
+  deleted     DateTime?
+  permissions Permission[]
+}
+
+enum RequestMethod {
+  GET
+  POST
+  DELETE
+  PATCH
+  PUT
+}
