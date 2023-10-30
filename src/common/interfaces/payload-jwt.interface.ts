@@ -1,4 +1,5 @@
 export interface PayloadJwtInterface {
   user: number;
-  role?: string;
+  role?: number;
+  permissions?: number[]
 }
