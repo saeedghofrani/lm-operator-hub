@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { BaseService } from 'src/common/abstract/service.abstract';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
@@ -7,6 +7,9 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserRepository } from '../repository/user.repository';
 import { PasswordHasherService } from 'src/utilities/crypto/service/hash.service';
 import { RoleService } from 'src/api/role/service/role.service';
+import { LoginDto } from '../dto/login.dto';
+import { PayloadJwtInterface } from 'src/common/interfaces/payload-jwt.interface';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService extends BaseService<
@@ -18,6 +21,7 @@ export class UserService extends BaseService<
     private userRepository: UserRepository,
     private passwordHasher: PasswordHasherService,
     private roleService: RoleService,
+    private jwtService: JwtService
   ) {
     super(userRepository);
   }
@@ -63,6 +67,33 @@ export class UserService extends BaseService<
       return this.userRepository.updateUser(id, updateUserDto);
     } catch (error) {
       throw error;
+    }
+  }
+
+  async login(loginDto: LoginDto) {
+    try {
+      const user = await this.userRepository.findByEmail(loginDto.email);
+      if (!user)
+        throw new BadRequestException('Username Does Not Exist');
+
+      if (
+        !(await this.passwordHasher.comparePasswords(
+          loginDto.password,
+          user.password,
+        ))
+      )
+        throw new ForbiddenException('Username or Password is wrong ...!');
+
+        const payload: PayloadJwtInterface = {
+          user: user.id,
+        };
+        const access_token = await this.jwtService.signAsync(payload);
+        return {
+          access_token,
+          roles: [...user.roles.map((item) => item.role.id)],
+        };
+    } catch (error) {
+      throw error
     }
   }
 
