@@ -13,6 +13,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { RouteModule } from '../route/route.module';
 import { PermissionModule } from '../permission/permission.module';
+import { PermissionGuard } from 'src/common/guards/permission.guard';
 
 @Module({
   imports: [
@@ -42,6 +43,10 @@ import { PermissionModule } from '../permission/permission.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
   ],
 })
