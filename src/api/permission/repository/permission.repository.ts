@@ -6,7 +6,7 @@ import { BaseRepository } from 'src/common/abstract/repository.abstract';
 import { PaginatedResult } from 'src/common/pagination/interface/result.interface';
 import { PaginationService } from 'src/common/pagination/service/create.service';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
-import { Permission } from '@prisma/client';
+import { Permission, RequestMethod } from '@prisma/client';
 
 @Injectable()
 export class PermissionRepository extends BaseRepository<
@@ -31,6 +31,37 @@ export class PermissionRepository extends BaseRepository<
 
   findAllPermission() {
     return this.findAll();
+  }
+
+  findByAddress(address: string, method: RequestMethod) {
+    return this.prisma.permission.findFirst({
+      where: {
+        routes: {
+          some: {
+            address,
+            method
+          }
+        }
+      },
+      select: {
+        id: true
+      }
+    });
+  }
+
+  findByRole(roleId: number) {
+    return this.prisma.permission.findMany({
+      where: {
+        roles: {
+          some: {
+            id: roleId
+          }
+        }
+      },
+      select: {
+        id: true
+      }
+    });
   }
 
   findOnePermission(id: number) {
