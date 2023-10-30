@@ -3,27 +3,23 @@ import { AppModule } from './api/app/app.module';
 import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './common/exception/error.exeption';
+import { AppConfigService } from './config/app/app-config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
-  const config = new DocumentBuilder()
-    .setTitle('License Market')
-    .setDescription('mini project')
-    .setVersion('0.1')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('doc', app, document);
+  const appConfigService = <AppConfigService>app.get(AppConfigService);
+  app.setGlobalPrefix(appConfigService.appApiPrefix);
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new HttpExceptionFilter(httpAdapter));
-  await app.listen(3000).then(async () => {
+  Logger.log(`Swagger Is Enable In development Mode`, 'Swagger');
+  await app.listen(appConfigService.appPort).then(async () => {
+    Logger.log(`Running`, 'Swagger');
     Logger.log(
-      `http://127.0.0.1:3000`,
+      `http://127.0.0.1:${appConfigService.appPort}/${appConfigService.appApiPrefix}`,
       'Running Server',
     );
     Logger.log(
-      `http://127.0.0.1:3000/doc`,
+      `http://127.0.0.1:${appConfigService.appPort}/${swaggerConfig.preFix}`,
       'Running Swagger',
     );
   });
