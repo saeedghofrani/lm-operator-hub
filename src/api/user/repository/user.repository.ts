@@ -33,12 +33,44 @@ export class UserRepository extends BaseRepository<
     return this.findAll();
   }
 
-  findOneUser(id: number) {
-    return this.findOne(id);
+  findOneUser(id: number, include?: Record<string, any>) {
+    return this.findOne(id, include);
+  }
+
+  findOneByRole(id: number, roleId: number) {
+    return this.prisma.user.findFirst({
+      where: {
+        id,
+        roles: {
+          some: {
+            role: {
+              id: roleId
+            }
+          }
+        }
+      }
+    });
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto) {
     return this.update(id, updateUserDto);
+  }
+
+  addRole(id: number, roleId: number) {
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        roles: {
+          create: [
+            {
+              role: {
+                connect: { id: roleId },
+              },
+            },
+          ],
+        }
+      }
+    })
   }
 
   removeUser(id: number) {
