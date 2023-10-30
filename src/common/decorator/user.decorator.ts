@@ -8,6 +8,9 @@ export const GetUser = createParamDecorator((data, request): UserInterface => {
     };
     if (req.user.role) {
         user.role = req.user.role;
-      }
+    }
+    if (req.user.permissions) {
+        user.permissions = req.user.permissions;
+    }
     return user;
 });
