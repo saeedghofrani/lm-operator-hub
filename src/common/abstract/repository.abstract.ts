@@ -7,7 +7,6 @@ export abstract class BaseRepository<T, C, A> {
     try {
       return await this.prisma[this.modelName].create({ data });
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
@@ -22,10 +21,10 @@ export abstract class BaseRepository<T, C, A> {
     }
   }
 
-  async findOne(id: number): Promise<T | null> {
+  async findOne(id: number, include?: Record<string, any>): Promise<T | null> {
     try {
       return await this.prisma[this.modelName].findUnique({
-        where: { id, deleted: null },
+        where: { id, deleted: null }
       });
     } catch (error) {
       throw error;
