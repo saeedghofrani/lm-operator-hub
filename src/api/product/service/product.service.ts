@@ -7,10 +7,12 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProductRepository } from '../repository/product.repository';
 
 @Injectable()
-export class ProductService extends BaseService<Product, CreateProductDto, UpdateProductDto> {
-  constructor(
-    private productRepository: ProductRepository
-  ) {
+export class ProductService extends BaseService<
+  Product,
+  CreateProductDto,
+  UpdateProductDto
+> {
+  constructor(private productRepository: ProductRepository) {
     super(productRepository);
   }
 
@@ -20,11 +22,11 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
         connect: {
           id: createProductDto.userId,
         },
-      }
+      };
       delete createProductDto.userId;
       return this.productRepository.createProduct(createProductDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -32,7 +34,7 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
     try {
       return this.productRepository.findAllProduct();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -40,7 +42,7 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
     try {
       return this.productRepository.findOneProduct(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -50,11 +52,11 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
         connect: {
           id: updateProductDto.userId,
         },
-      }
+      };
       delete updateProductDto.userId;
       return this.productRepository.updateProduct(id, updateProductDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -62,23 +64,21 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
     try {
       return this.productRepository.removeProduct(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async pagination(
-    paginationQueryDto: PaginationQueryDto
-  ) {
+  async pagination(paginationQueryDto: PaginationQueryDto) {
     try {
       if (paginationQueryDto.where) {
         let whereCondition = {
-          id: +paginationQueryDto.where.id || undefined
+          id: +paginationQueryDto.where.id || undefined,
         };
         paginationQueryDto.where = whereCondition;
       }
-      return this.productRepository.pagination(paginationQueryDto)
+      return this.productRepository.pagination(paginationQueryDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

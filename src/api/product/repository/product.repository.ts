@@ -9,44 +9,48 @@ import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { Product } from '@prisma/client';
 
 @Injectable()
-export class ProductRepository extends BaseRepository<Product, CreateProductDto, UpdateProductDto> {
-    constructor(
-        protected prisma: PrismaService,
-        private paginationService: PaginationService
-    ) {
-        super(prisma);
-    }
+export class ProductRepository extends BaseRepository<
+  Product,
+  CreateProductDto,
+  UpdateProductDto
+> {
+  constructor(
+    protected prisma: PrismaService,
+    private paginationService: PaginationService,
+  ) {
+    super(prisma);
+  }
 
-    get modelName(): string {
-        return 'product';
-    }
+  get modelName(): string {
+    return 'product';
+  }
 
-    createProduct(createProductDto: CreateProductDto) {
-        return this.create(createProductDto);
-    }
+  createProduct(createProductDto: CreateProductDto) {
+    return this.create(createProductDto);
+  }
 
-    findAllProduct() {
-        return this.findAll();
-    }
+  findAllProduct() {
+    return this.findAll();
+  }
 
-    findOneProduct(id: number) {
-        return this.findOne(id);
-    }
+  findOneProduct(id: number) {
+    return this.findOne(id);
+  }
 
-    updateProduct(id: number, updateProductDto: UpdateProductDto) {
-        return this.update(id, updateProductDto);
-    }
+  updateProduct(id: number, updateProductDto: UpdateProductDto) {
+    return this.update(id, updateProductDto);
+  }
 
-    removeProduct(id: number) {
-        return this.remove(id);
-    }
+  removeProduct(id: number) {
+    return this.remove(id);
+  }
 
-    pagination(
-        paginationQueryDto: PaginationQueryDto
-    ): Promise<PaginatedResult<Product>> {
-        return this.paginationService.paginate(this.prisma.product,
-            paginationQueryDto
-        );
-    }
+  pagination(
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResult<Product>> {
+    return this.paginationService.paginate(
+      this.prisma.product,
+      paginationQueryDto,
+    );
+  }
 }
-

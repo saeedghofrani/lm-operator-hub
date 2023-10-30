@@ -3,21 +3,21 @@ import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ProductEntity } from '../entities/product.entity';
 
 export class CreateProductDto implements Partial<ProductEntity> {
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsNumber()
-    durationTime: number;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  durationTime: number;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    name: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsInt()
-    userId: number;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
 
-    @ApiHideProperty() 
-    assignee;
+  @ApiHideProperty()
+  assignee;
 }

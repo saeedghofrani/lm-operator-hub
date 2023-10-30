@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateOrderDto } from '../dto/create-order.dto';
@@ -9,7 +18,7 @@ import { OrderService } from '../service/order.service';
 @Controller('order')
 @ApiTags('orders')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) { }
+  constructor(private readonly orderService: OrderService) {}
 
   @Post()
   @ApiCreatedResponse({ type: OrderEntity })

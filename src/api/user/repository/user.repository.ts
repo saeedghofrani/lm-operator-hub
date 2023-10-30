@@ -9,44 +9,48 @@ import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { User } from '@prisma/client';
 
 @Injectable()
-export class UserRepository extends BaseRepository<User, CreateUserDto, UpdateUserDto> {
-    constructor(
-        protected prisma: PrismaService,
-        private paginationService: PaginationService
-    ) {
-        super(prisma);
-    }
+export class UserRepository extends BaseRepository<
+  User,
+  CreateUserDto,
+  UpdateUserDto
+> {
+  constructor(
+    protected prisma: PrismaService,
+    private paginationService: PaginationService,
+  ) {
+    super(prisma);
+  }
 
-    get modelName(): string {
-        return 'user';
-    }
+  get modelName(): string {
+    return 'user';
+  }
 
-    createUser(createUserDto: CreateUserDto) {
-        return this.create(createUserDto);
-    }
+  createUser(createUserDto: CreateUserDto) {
+    return this.create(createUserDto);
+  }
 
-    findAllUser() {
-        return this.findAll();
-    }
+  findAllUser() {
+    return this.findAll();
+  }
 
-    findOneUser(id: number) {
-        return this.findOne(id);
-    }
+  findOneUser(id: number) {
+    return this.findOne(id);
+  }
 
-    updateUser(id: number, updateUserDto: UpdateUserDto) {
-        return this.update(id, updateUserDto);
-    }
+  updateUser(id: number, updateUserDto: UpdateUserDto) {
+    return this.update(id, updateUserDto);
+  }
 
-    removeUser(id: number) {
-        return this.remove(id);
-    }
+  removeUser(id: number) {
+    return this.remove(id);
+  }
 
-    pagination(
-        paginationQueryDto: PaginationQueryDto
-    ): Promise<PaginatedResult<User>> {
-        return this.paginationService.paginate(this.prisma.user,
-            paginationQueryDto
-        );
-    }
+  pagination(
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResult<User>> {
+    return this.paginationService.paginate(
+      this.prisma.user,
+      paginationQueryDto,
+    );
+  }
 }
-

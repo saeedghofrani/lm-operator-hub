@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateProductDto } from '../dto/create-product.dto';
@@ -9,7 +18,7 @@ import { ProductService } from '../service/product.service';
 @Controller('product')
 @ApiTags('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) { }
+  constructor(private readonly productService: ProductService) {}
 
   @Post()
   @ApiCreatedResponse({ type: ProductEntity })

@@ -9,48 +9,52 @@ import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { Role } from '@prisma/client';
 
 @Injectable()
-export class RoleRepository extends BaseRepository<Role, CreateRoleDto, UpdateRoleDto> {
-    constructor(
-        protected prisma: PrismaService,
-        private paginationService: PaginationService
-    ) {
-        super(prisma);
-    }
+export class RoleRepository extends BaseRepository<
+  Role,
+  CreateRoleDto,
+  UpdateRoleDto
+> {
+  constructor(
+    protected prisma: PrismaService,
+    private paginationService: PaginationService,
+  ) {
+    super(prisma);
+  }
 
-    get modelName(): string {
-        return 'role';
-    }
+  get modelName(): string {
+    return 'role';
+  }
 
-    createRole(createRoleDto: CreateRoleDto) {
-        return this.create(createRoleDto);
-    }
+  createRole(createRoleDto: CreateRoleDto) {
+    return this.create(createRoleDto);
+  }
 
-    findAllRole() {
-        return this.findAll();
-    }
+  findAllRole() {
+    return this.findAll();
+  }
 
-    findOneRole(id: number) {
-        return this.findOne(id);
-    }
+  findOneRole(id: number) {
+    return this.findOne(id);
+  }
 
-    findDefaultRole() {
-        return this.prisma.role.findFirst({where: { default: true }});
-    }
+  findDefaultRole() {
+    return this.prisma.role.findFirst({ where: { default: true } });
+  }
 
-    updateRole(id: number, updateRoleDto: UpdateRoleDto) {
-        return this.update(id, updateRoleDto);
-    }
+  updateRole(id: number, updateRoleDto: UpdateRoleDto) {
+    return this.update(id, updateRoleDto);
+  }
 
-    removeRole(id: number) {
-        return this.remove(id);
-    }
+  removeRole(id: number) {
+    return this.remove(id);
+  }
 
-    pagination(
-        paginationQueryDto: PaginationQueryDto
-    ): Promise<PaginatedResult<Role>> {
-        return this.paginationService.paginate(this.prisma.role,
-            paginationQueryDto
-        );
-    }
+  pagination(
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResult<Role>> {
+    return this.paginationService.paginate(
+      this.prisma.role,
+      paginationQueryDto,
+    );
+  }
 }
-

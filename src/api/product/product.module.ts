@@ -9,6 +9,6 @@ import { ProductService } from './service/product.service';
   imports: [PrismaModule],
   controllers: [ProductController],
   providers: [ProductService, ProductRepository, PaginationService],
-  exports: [ProductService]
+  exports: [ProductService],
 })
 export class ProductModule {}

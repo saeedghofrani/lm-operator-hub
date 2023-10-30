@@ -9,44 +9,48 @@ import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { Order } from '@prisma/client';
 
 @Injectable()
-export class OrderRepository extends BaseRepository<Order, CreateOrderDto, UpdateOrderDto> {
-    constructor(
-        protected prisma: PrismaService,
-        private paginationService: PaginationService
-    ) {
-        super(prisma);
-    }
+export class OrderRepository extends BaseRepository<
+  Order,
+  CreateOrderDto,
+  UpdateOrderDto
+> {
+  constructor(
+    protected prisma: PrismaService,
+    private paginationService: PaginationService,
+  ) {
+    super(prisma);
+  }
 
-    get modelName(): string {
-        return 'order';
-    }
+  get modelName(): string {
+    return 'order';
+  }
 
-    createOrder(createOrderDto: CreateOrderDto) {
-        return this.create(createOrderDto);
-    }
+  createOrder(createOrderDto: CreateOrderDto) {
+    return this.create(createOrderDto);
+  }
 
-    findAllOrder() {
-        return this.findAll();
-    }
+  findAllOrder() {
+    return this.findAll();
+  }
 
-    findOneOrder(id: number) {
-        return this.findOne(id);
-    }
+  findOneOrder(id: number) {
+    return this.findOne(id);
+  }
 
-    updateOrder(id: number, updateOrderDto: UpdateOrderDto) {
-        return this.update(id, updateOrderDto);
-    }
+  updateOrder(id: number, updateOrderDto: UpdateOrderDto) {
+    return this.update(id, updateOrderDto);
+  }
 
-    removeOrder(id: number) {
-        return this.remove(id);
-    }
+  removeOrder(id: number) {
+    return this.remove(id);
+  }
 
-    pagination(
-        paginationQueryDto: PaginationQueryDto
-    ): Promise<PaginatedResult<Order>> {
-        return this.paginationService.paginate(this.prisma.order,
-            paginationQueryDto
-        );
-    }
+  pagination(
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResult<Order>> {
+    return this.paginationService.paginate(
+      this.prisma.order,
+      paginationQueryDto,
+    );
+  }
 }
-

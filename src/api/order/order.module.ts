@@ -10,6 +10,6 @@ import { ProductModule } from '../product/product.module';
   imports: [PrismaModule, ProductModule],
   controllers: [OrderController],
   providers: [OrderService, OrderRepository, PaginationService],
-  exports: [OrderService]
+  exports: [OrderService],
 })
 export class OrderModule {}

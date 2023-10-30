@@ -10,6 +10,11 @@ import { RoleModule } from '../role/role.module';
 @Module({
   imports: [PrismaModule, RoleModule],
   controllers: [UserController],
-  providers: [UserService, UserRepository, PaginationService, PasswordHasherService],
+  providers: [
+    UserService,
+    UserRepository,
+    PaginationService,
+    PasswordHasherService,
+  ],
 })
 export class UserModule {}

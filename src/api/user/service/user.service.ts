@@ -9,26 +9,36 @@ import { PasswordHasherService } from 'src/utilities/crypto/service/hash.service
 import { RoleService } from 'src/api/role/service/role.service';
 
 @Injectable()
-export class UserService extends BaseService<User, CreateUserDto, UpdateUserDto> {
+export class UserService extends BaseService<
+  User,
+  CreateUserDto,
+  UpdateUserDto
+> {
   constructor(
     private userRepository: UserRepository,
     private passwordHasher: PasswordHasherService,
     private roleService: RoleService,
-    ) {
+  ) {
     super(userRepository);
   }
 
   async create(createUserDto: CreateUserDto) {
     try {
-      createUserDto.password = await this.passwordHasher.hashPassword(createUserDto.password);
+      createUserDto.password = await this.passwordHasher.hashPassword(
+        createUserDto.password,
+      );
       createUserDto.roles = {
         create: [
-          { role: { connect: { id: (await this.roleService.findDefaultRole()).id } } },
+          {
+            role: {
+              connect: { id: (await this.roleService.findDefaultRole()).id },
+            },
+          },
         ],
       };
       return this.userRepository.createUser(createUserDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -36,7 +46,7 @@ export class UserService extends BaseService<User, CreateUserDto, UpdateUserDto>
     try {
       return this.userRepository.findAllUser();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -44,7 +54,7 @@ export class UserService extends BaseService<User, CreateUserDto, UpdateUserDto>
     try {
       return this.userRepository.findOneUser(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -52,7 +62,7 @@ export class UserService extends BaseService<User, CreateUserDto, UpdateUserDto>
     try {
       return this.userRepository.updateUser(id, updateUserDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -60,13 +70,11 @@ export class UserService extends BaseService<User, CreateUserDto, UpdateUserDto>
     try {
       return this.userRepository.removeUser(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async pagination(
-    paginationQueryDto: PaginationQueryDto
-  ) {
+  async pagination(paginationQueryDto: PaginationQueryDto) {
     try {
       if (paginationQueryDto.where) {
         let whereCondition = {
@@ -75,18 +83,18 @@ export class UserService extends BaseService<User, CreateUserDto, UpdateUserDto>
           roles: {
             some: {
               role: {
-                name: paginationQueryDto.where.role_name
-              }
-            }
-          }
+                name: paginationQueryDto.where.role_name,
+              },
+            },
+          },
         };
         paginationQueryDto.where = whereCondition;
       }
       console.log(paginationQueryDto.where);
-      
-      return this.userRepository.pagination(paginationQueryDto)
+
+      return this.userRepository.pagination(paginationQueryDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

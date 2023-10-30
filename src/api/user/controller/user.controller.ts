@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -9,7 +18,7 @@ import { UserService } from '../service/user.service';
 @Controller('user')
 @ApiTags('users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiCreatedResponse({ type: UserEntity })

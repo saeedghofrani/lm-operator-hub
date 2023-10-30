@@ -7,7 +7,11 @@ import { Prisma, Role } from '@prisma/client';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 
 @Injectable()
-export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto> {
+export class RoleService extends BaseService<
+  Role,
+  CreateRoleDto,
+  UpdateRoleDto
+> {
   constructor(private roleRepository: RoleRepository) {
     super(roleRepository);
   }
@@ -16,7 +20,7 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     try {
       return this.roleRepository.createRole(createRoleDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -24,7 +28,7 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     try {
       return this.roleRepository.findAllRole();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -32,7 +36,7 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     try {
       return this.roleRepository.findOneRole(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -40,7 +44,7 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     try {
       return this.roleRepository.findDefaultRole();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -48,7 +52,7 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     try {
       return this.roleRepository.updateRole(id, updateRoleDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -56,23 +60,21 @@ export class RoleService extends BaseService<Role, CreateRoleDto, UpdateRoleDto>
     try {
       return this.roleRepository.removeRole(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async pagination(
-    paginationQueryDto: PaginationQueryDto
-  ) {
+  async pagination(paginationQueryDto: PaginationQueryDto) {
     try {
       if (paginationQueryDto.where) {
         let whereCondition = {
-          id: +paginationQueryDto.where.id || undefined
+          id: +paginationQueryDto.where.id || undefined,
         };
         paginationQueryDto.where = whereCondition;
       }
-      return this.roleRepository.pagination(paginationQueryDto)
+      return this.roleRepository.pagination(paginationQueryDto);
     } catch (error) {
-      throw error 
+      throw error;
     }
   }
 }

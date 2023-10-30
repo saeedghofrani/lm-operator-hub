@@ -8,17 +8,23 @@ import { OrderRepository } from '../repository/order.repository';
 import { ProductService } from 'src/api/product/service/product.service';
 
 @Injectable()
-export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrderDto> {
+export class OrderService extends BaseService<
+  Order,
+  CreateOrderDto,
+  UpdateOrderDto
+> {
   constructor(
     private orderRepository: OrderRepository,
-    private productService: ProductService
+    private productService: ProductService,
   ) {
     super(orderRepository);
   }
 
   async create(createOrderDto: CreateOrderDto) {
     try {
-      const product = await this.productService.findOne(createOrderDto.productId);
+      const product = await this.productService.findOne(
+        createOrderDto.productId,
+      );
       const order = this.mapToOrder(createOrderDto, product);
       return this.orderRepository.createOrder(order);
     } catch (error) {
@@ -26,18 +32,22 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     }
   }
 
-  private mapToOrder(createOrderDto: CreateOrderDto, product: Product): CreateOrderDto {
+  private mapToOrder(
+    createOrderDto: CreateOrderDto,
+    product: Product,
+  ): CreateOrderDto {
     const dueTime = this.calculateDueTime(product.durationTime);
     const order = {
       ...createOrderDto,
       assignedTo: { connect: { id: createOrderDto.userId } },
       product: { connect: { id: createOrderDto.productId } },
       orderTime: new Date(),
-      orderNumber: `${product.name}` + `${product.id}` + `${new Date().getTime()}`,
+      orderNumber:
+        `${product.name}` + `${product.id}` + `${new Date().getTime()}`,
       dueTime,
     };
-    delete order.productId
-    delete order.userId
+    delete order.productId;
+    delete order.userId;
     return order;
   }
 
@@ -51,7 +61,7 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     try {
       return this.orderRepository.findAllOrder();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -59,7 +69,7 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     try {
       return this.orderRepository.findOneOrder(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -67,7 +77,7 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     try {
       return this.orderRepository.updateOrder(id, updateOrderDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -75,31 +85,31 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     try {
       return this.orderRepository.removeOrder(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-    async pagination(
-      paginationQueryDto: PaginationQueryDto
-    ) {
-      try {
-        if (paginationQueryDto.where) {
-          let whereCondition = {
-            id: +paginationQueryDto.where.id || undefined,
-            orderNumber: paginationQueryDto.where.orderNumber || undefined,
-            assignedTo: {
-              email: paginationQueryDto.where.email || undefined
-            },
-            dueTime: {
-              lte: new Date(paginationQueryDto.where.lte).toISOString() || undefined,
-              gt: new Date(paginationQueryDto.where.gt).toISOString() || undefined
-            }
-          };
-          paginationQueryDto.where = whereCondition;
-        }
-        return this.orderRepository.pagination(paginationQueryDto)
-      } catch (error) {
-        throw error
+  async pagination(paginationQueryDto: PaginationQueryDto) {
+    try {
+      if (paginationQueryDto.where) {
+        let whereCondition = {
+          id: +paginationQueryDto.where.id || undefined,
+          orderNumber: paginationQueryDto.where.orderNumber || undefined,
+          assignedTo: {
+            email: paginationQueryDto.where.email || undefined,
+          },
+          dueTime: {
+            lte:
+              new Date(paginationQueryDto.where.lte).toISOString() || undefined,
+            gt:
+              new Date(paginationQueryDto.where.gt).toISOString() || undefined,
+          },
+        };
+        paginationQueryDto.where = whereCondition;
       }
+      return this.orderRepository.pagination(paginationQueryDto);
+    } catch (error) {
+      throw error;
     }
+  }
 }

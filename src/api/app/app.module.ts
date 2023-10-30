@@ -8,7 +8,13 @@ import { OrderModule } from '../order/order.module';
 import { ConfigurationModule } from 'src/config/configuration.module';
 
 @Module({
-  imports: [RoleModule, UserModule, ProductModule, OrderModule, ConfigurationModule],
+  imports: [
+    RoleModule,
+    UserModule,
+    ProductModule,
+    OrderModule,
+    ConfigurationModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
