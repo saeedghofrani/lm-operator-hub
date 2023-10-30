@@ -7,6 +7,7 @@ import postgresConfiguration from './postgres/postgres.configuration';
 import jwtConfiguration from './jwt/jwt-configuration';
 import swaggerConfiguration from './swagger/swagger.configuration';
 import { SwaggerConfigService } from './swagger/swagger.service';
+import { JwtConfigService } from './jwt/jwt.service';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { SwaggerConfigService } from './swagger/swagger.service';
       ],
     }),
   ],
-  providers: [AppConfigService, SwaggerConfigService],
-  exports: [AppConfigService, SwaggerConfigService],
+  providers: [AppConfigService, SwaggerConfigService, JwtConfigService],
+  exports: [AppConfigService, SwaggerConfigService, JwtConfigService],
 })
-export class ConfigurationModule {}
+export class ConfigurationModule { }
