@@ -7,7 +7,10 @@ import { RoleModule } from '../role/role.module';
 import { UserModule } from '../user/user.module';
 import { AppController } from './controller/app.controller';
 import { AppService } from './service/app.service';
-import { JwtMainModule } from 'src/common/jwt/jwt.module';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtConfigService } from 'src/config/jwt/jwt.service';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Module({
   imports: [
@@ -16,10 +19,26 @@ import { JwtMainModule } from 'src/common/jwt/jwt.module';
     ProductModule,
     OrderModule,
     ConfigurationModule,
-    JwtMainModule,
+    JwtModule.registerAsync({
+      imports: [ConfigurationModule],
+      inject: [JwtConfigService],
+      useFactory: (config: JwtConfigService) => ({
+        secret: config.secret,
+        signOptions: {
+          expiresIn: config.exp_d,
+        },
+      }),
+      global: true
+    }),
     ThrottlerConfigModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule { }
