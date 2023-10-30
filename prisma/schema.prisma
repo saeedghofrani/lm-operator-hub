@@ -5,8 +5,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = "postgres://postgres:123@localhost:5432/lcmarket"
+  provider = env("DATABASE_PROVIDER")
+  url      = env("DATABASE_URL")
 }
 
 model User {
