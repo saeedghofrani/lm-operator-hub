@@ -6,11 +6,26 @@ import { PrismaClient, RequestMethod } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+    const superAdminRole = await prisma.role.upsert({
+        where: { name: 'admin' },
+        update: {},
+        create: {
+            name: 'super admin',
+        }
+    });
     const adminRole = await prisma.role.upsert({
         where: { name: 'admin' },
         update: {},
         create: {
             name: 'admin',
+        }
+    });
+    const superUserRole = await prisma.role.upsert({
+        where: { name: 'user' },
+        update: {},
+        create: {
+            name: 'super user',
+            default: true
         }
     });
     const userRole = await prisma.role.upsert({
@@ -31,7 +46,7 @@ async function main() {
             username: 'saeed',
             roles: {
                 create: [{
-                    role: { connect: { id: userRole.id } }
+                    role: { connect: { id: superAdminRole.id } }
                 },
                 {
                     role: { connect: { id: adminRole.id } }
