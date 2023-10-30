@@ -5,8 +5,8 @@ generator client {
 }
 
 datasource db {
-  provider = env("DATABASE_PROVIDER")
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = "postgresql://postgres:123@localhost:5432/lcmarket?schema=public"
 }
 
 model User {
@@ -18,14 +18,6 @@ model User {
   roles    RoleUser[]
   Product  Product[]
   Order    Order[]
-}
-
-model Role {
-  id      Int        @id @default(autoincrement())
-  name    String     @unique
-  default Boolean    @default(false)
-  deleted DateTime?
-  User    RoleUser[]
 }
 
 model RoleUser {
@@ -57,4 +49,38 @@ model Order {
   deleted     DateTime?
   productId   Int
   userId      Int
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  default     Boolean      @default(false)
+  deleted     DateTime?
+  User        RoleUser[]
+  permissions Permission[]
+}
+
+model Permission {
+  id      Int       @id @default(autoincrement())
+  name    String
+  deleted DateTime?
+  roles   Role[]
+  routes  Route[]
+}
+
+model Route {
+  id          Int           @id @default(autoincrement())
+  address     String
+  method      RequestMethod
+  description String
+  deleted     DateTime?
+  permissions Permission[]
+}
+
+enum RequestMethod {
+  GET
+  POST
+  DELETE
+  PATCH
+  PUT
 }
