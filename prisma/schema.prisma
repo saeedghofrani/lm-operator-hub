@@ -39,7 +39,7 @@ model RoleUser {
 
 model Product {
   id           Int       @id @default(autoincrement())
-  name         String
+  name         String    @unique
   assignee     User      @relation(fields: [userId], references: [id])
   durationTime Int
   userId       Int
