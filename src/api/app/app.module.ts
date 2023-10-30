@@ -12,6 +12,7 @@ import { JwtConfigService } from 'src/config/jwt/jwt.service';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { RouteModule } from '../route/route.module';
+import { PermissionModule } from '../permission/permission.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { RouteModule } from '../route/route.module';
     UserModule,
     ProductModule,
     OrderModule,
+    PermissionModule,
     RouteModule,
     ConfigurationModule,
     JwtModule.registerAsync({
