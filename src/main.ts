@@ -13,8 +13,8 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.setGlobalPrefix(appConfigService.appApiPrefix);
   app.useGlobalFilters(new HttpExceptionFilter(httpAdapter));
-  app.use(helmet({crossOriginResourcePolicy: false,}));
-  app.enableCors({origin: '*'});
+  app.use(helmet({ crossOriginResourcePolicy: false }));
+  app.enableCors({ origin: '*' });
   swaggerConfig.init(app);
   await app.listen(appConfigService.appPort).then(async () => {
     Logger.log(`Swagger Is Enable In development Mode`, 'Swagger');
