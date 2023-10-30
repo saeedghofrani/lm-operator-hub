@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Permission } from '@prisma/client';
+import { $Enums, Permission, RequestMethod } from '@prisma/client';
 import { BaseService } from 'src/common/abstract/service.abstract';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
@@ -62,6 +62,22 @@ export class PermissionService extends BaseService<
       return this.permissionRepository.findOnePermission(id);
     } catch (error) {
       throw error;
+    }
+  }
+
+  async findByAddress(address: string, method: RequestMethod) {
+    try {
+      return await this.permissionRepository.findByAddress(address, method);
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async findByRole(roleId: number) {
+    try {
+      return await this.permissionRepository.findByRole(roleId);
+    } catch (error) {
+      throw error
     }
   }
 
