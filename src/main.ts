@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { AppModule } from './api/app/app.module';
@@ -15,6 +15,13 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter(httpAdapter));
   app.use(helmet({ crossOriginResourcePolicy: false }));
   app.enableCors({ origin: '*' });
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+      forbidNonWhitelisted: true,
+    }),
+  );
   swaggerConfig.init(app);
   await app.listen(appConfigService.appPort).then(async () => {
     Logger.log(`Swagger Is Enable In development Mode`, 'Swagger');
