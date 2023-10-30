@@ -5,9 +5,10 @@ import { RoleModule } from '../role/role.module';
 import { UserModule } from '../user/user.module';
 import { ProductModule } from '../product/product.module';
 import { OrderModule } from '../order/order.module';
+import { ConfigurationModule } from 'src/config/configuration.module';
 
 @Module({
-  imports: [RoleModule, UserModule, ProductModule, OrderModule],
+  imports: [RoleModule, UserModule, ProductModule, OrderModule, ConfigurationModule],
   controllers: [AppController],
   providers: [AppService],
 })
