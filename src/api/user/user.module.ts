@@ -6,9 +6,10 @@ import { RoleModule } from '../role/role.module';
 import { UserController } from './controller/user.controller';
 import { UserRepository } from './repository/user.repository';
 import { UserService } from './service/user.service';
+import { PermissionModule } from '../permission/permission.module';
 
 @Module({
-  imports: [PrismaModule, RoleModule],
+  imports: [PrismaModule, RoleModule, PermissionModule],
   controllers: [UserController],
   providers: [
     UserService,
