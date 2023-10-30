@@ -45,6 +45,19 @@ export class UserRepository extends BaseRepository<
     return this.remove(id);
   }
 
+  async findByEmail(email: string) {
+    return this.prisma.user.findFirst({
+      where: {email},
+      include: {
+        roles: {
+          include: {
+            role: true
+          }
+        }
+      }
+     });
+  }
+
   pagination(
     paginationQueryDto: PaginationQueryDto,
   ): Promise<PaginatedResult<User>> {
