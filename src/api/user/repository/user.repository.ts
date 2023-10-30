@@ -38,7 +38,7 @@ export class UserRepository extends BaseRepository<
   }
 
   findOneByRole(id: number, roleId: number) {
-    return this.prisma.user.findFirst({
+    return this.prisma.getClient().user.findFirst({
       where: {
         id,
         roles: {
@@ -57,7 +57,7 @@ export class UserRepository extends BaseRepository<
   }
 
   addRole(id: number, roleId: number) {
-    return this.prisma.user.update({
+    return this.prisma.getClient().user.update({
       where: { id },
       data: {
         roles: {
@@ -78,7 +78,7 @@ export class UserRepository extends BaseRepository<
   }
 
   async findByEmail(email: string) {
-    return this.prisma.user.findFirst({
+    return this.prisma.getClient().user.findFirst({
       where: { email },
       include: {
         roles: {
@@ -94,7 +94,7 @@ export class UserRepository extends BaseRepository<
     paginationQueryDto: PaginationQueryDto,
   ): Promise<PaginatedResult<User>> {
     return this.paginationService.paginate(
-      this.prisma.user,
+      this.prisma.getClient().user,
       paginationQueryDto,
     );
   }

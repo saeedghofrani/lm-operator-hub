@@ -34,7 +34,7 @@ export class PermissionRepository extends BaseRepository<
   }
 
   findByAddress(address: string, method: RequestMethod) {
-    return this.prisma.permission.findFirst({
+    return this.prisma.getClient().permission.findFirst({
       where: {
         routes: {
           some: {
@@ -50,7 +50,7 @@ export class PermissionRepository extends BaseRepository<
   }
 
   findByRole(roleId: number) {
-    return this.prisma.permission.findMany({
+    return this.prisma.getClient().permission.findMany({
       where: {
         roles: {
           some: {
@@ -80,7 +80,7 @@ export class PermissionRepository extends BaseRepository<
     paginationQueryDto: PaginationQueryDto,
   ): Promise<PaginatedResult<Permission>> {
     return this.paginationService.paginate(
-      this.prisma.permission,
+      this.prisma.getClient().permission,
       paginationQueryDto,
     );
   }

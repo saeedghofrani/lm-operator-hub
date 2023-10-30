@@ -5,7 +5,7 @@ export abstract class BaseRepository<T, C, A> {
 
   async create(data: C): Promise<T> {
     try {
-      return await this.prisma[this.modelName].create({ data });
+      return await this.prisma.getClient()[this.modelName].create({ data });
     } catch (error) {
       throw error;
     }
@@ -13,7 +13,7 @@ export abstract class BaseRepository<T, C, A> {
 
   async findAll(): Promise<T[]> {
     try {
-      return await this.prisma[this.modelName].findMany({
+      return await this.prisma.getClient()[this.modelName].findMany({
         where: { deleted: null },
       });
     } catch (error) {
@@ -23,7 +23,7 @@ export abstract class BaseRepository<T, C, A> {
 
   async findOne(id: number, include?: Record<string, any>): Promise<T | null> {
     try {
-      return await this.prisma[this.modelName].findUnique({
+      return await this.prisma.getClient()[this.modelName].findUnique({
         where: { id, deleted: null }
       });
     } catch (error) {
@@ -33,7 +33,7 @@ export abstract class BaseRepository<T, C, A> {
 
   async update(id: number, data: Partial<A>): Promise<T | null> {
     try {
-      return await this.prisma[this.modelName].update({ where: { id }, data });
+      return await this.prisma.getClient()[this.modelName].update({ where: { id }, data });
     } catch (error) {
       throw error;
     }
@@ -41,11 +41,11 @@ export abstract class BaseRepository<T, C, A> {
 
   async remove(id: number): Promise<T | null> {
     try {
-      const existingRecord = await this.prisma[this.modelName].findUnique({
+      const existingRecord = await this.prisma.getClient()[this.modelName].findUnique({
         where: { id },
       });
       if (!existingRecord) return null;
-      return this.prisma[this.modelName].update({
+      return this.prisma.getClient()[this.modelName].update({
         where: { id },
         data: { deleted: new Date() },
       });

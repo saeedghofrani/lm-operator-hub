@@ -38,7 +38,7 @@ export class RoleRepository extends BaseRepository<
   }
 
   findDefaultRole() {
-    return this.prisma.role.findFirst({ where: { default: true } });
+    return this.prisma.getClient().role.findFirst({ where: { default: true } });
   }
 
   updateRole(id: number, updateRoleDto: UpdateRoleDto) {
@@ -53,7 +53,7 @@ export class RoleRepository extends BaseRepository<
     paginationQueryDto: PaginationQueryDto,
   ): Promise<PaginatedResult<Role>> {
     return this.paginationService.paginate(
-      this.prisma.role,
+      this.prisma.getClient().role,
       paginationQueryDto,
     );
   }
