@@ -1,5 +1,11 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 import { UserEntity } from '../entities/user.entity';
 
 export class CreateUserDto implements Partial<UserEntity> {
@@ -20,9 +26,13 @@ export class CreateUserDto implements Partial<UserEntity> {
   @Length(1, 20, {
     message: 'Password length must be between 6 and 20 characters',
   })
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/, {
-    message: 'Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character',
-  })
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+    {
+      message:
+        'Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character',
+    },
+  )
   password: string;
 
   @ApiHideProperty()

@@ -28,9 +28,9 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
           expiresIn: config.exp_d,
         },
       }),
-      global: true
+      global: true,
     }),
-    ThrottlerConfigModule
+    ThrottlerConfigModule,
   ],
   controllers: [AppController],
   providers: [
@@ -41,4 +41,4 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

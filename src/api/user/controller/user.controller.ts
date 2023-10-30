@@ -14,6 +14,8 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { UserService } from '../service/user.service';
+import { LoginDto } from '../dto/login.dto';
+import { Public } from 'src/common/decorator/public-metadata.decorator';
 
 @Controller('user')
 @ApiTags('users')
@@ -35,6 +37,12 @@ export class UserController {
   @Get('page')
   pagination(@Query() paginationQueryDto: PaginationQueryDto) {
     return this.userService.pagination(paginationQueryDto);
+  }
+
+  @Public()
+  @Post('login')
+  login(@Body() loginDto: LoginDto) {
+    return this.userService.login(loginDto);
   }
 
   @Get(':id')

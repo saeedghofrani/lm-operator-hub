@@ -1,4 +1,8 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { User } from '@prisma/client';
 import { BaseService } from 'src/common/abstract/service.abstract';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
@@ -21,7 +25,7 @@ export class UserService extends BaseService<
     private userRepository: UserRepository,
     private passwordHasher: PasswordHasherService,
     private roleService: RoleService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {
     super(userRepository);
   }
@@ -73,8 +77,7 @@ export class UserService extends BaseService<
   async login(loginDto: LoginDto) {
     try {
       const user = await this.userRepository.findByEmail(loginDto.email);
-      if (!user)
-        throw new BadRequestException('Username Does Not Exist');
+      if (!user) throw new BadRequestException('Username Does Not Exist');
 
       if (
         !(await this.passwordHasher.comparePasswords(
@@ -84,16 +87,16 @@ export class UserService extends BaseService<
       )
         throw new ForbiddenException('Username or Password is wrong ...!');
 
-        const payload: PayloadJwtInterface = {
-          user: user.id,
-        };
-        const access_token = await this.jwtService.signAsync(payload);
-        return {
-          access_token,
-          roles: [...user.roles.map((item) => item.role.id)],
-        };
+      const payload: PayloadJwtInterface = {
+        user: user.id,
+      };
+      const access_token = await this.jwtService.signAsync(payload);
+      return {
+        access_token,
+        roles: [...user.roles.map((item) => item.role.id)],
+      };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

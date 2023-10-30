@@ -26,4 +26,4 @@ import { JwtConfigService } from './jwt/jwt.service';
   providers: [AppConfigService, SwaggerConfigService, JwtConfigService],
   exports: [AppConfigService, SwaggerConfigService, JwtConfigService],
 })
-export class ConfigurationModule { }
+export class ConfigurationModule {}

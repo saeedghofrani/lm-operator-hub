@@ -47,15 +47,15 @@ export class UserRepository extends BaseRepository<
 
   async findByEmail(email: string) {
     return this.prisma.user.findFirst({
-      where: {email},
+      where: { email },
       include: {
         roles: {
           include: {
-            role: true
-          }
-        }
-      }
-     });
+            role: true,
+          },
+        },
+      },
+    });
   }
 
   pagination(
