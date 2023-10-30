@@ -16,6 +16,10 @@ import { UserEntity } from '../entities/user.entity';
 import { UserService } from '../service/user.service';
 import { LoginDto } from '../dto/login.dto';
 import { Public } from 'src/common/decorator/public-metadata.decorator';
+import { GetUser } from 'src/common/decorator/user.decorator';
+import { UserInterface } from 'src/common/interfaces/user.interface';
+import { RoleDto } from 'src/api/role/dto/role.dto';
+import { PublicPermission } from 'src/common/decorator/public-permission-metadata.decorator';
 
 @Controller('user')
 @ApiTags('users')
@@ -41,9 +45,16 @@ export class UserController {
   }
 
   @Public()
+  @PublicPermission()
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);
+  }
+
+  @PublicPermission()
+  @Get('role/:id')
+  setRole(@GetUser() userInterface: UserInterface, @Param('id') id: number) {
+    return this.userService.setRole(userInterface, id);
   }
 
   @Get(':id')
@@ -52,10 +63,16 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  @Patch()
+  @ApiOkResponse({ type: UserEntity })
+  update(@GetUser() userInterface: UserInterface, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(+userInterface.user, updateUserDto);
+  }
+
   @Patch(':id')
   @ApiOkResponse({ type: UserEntity })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  addRole(@Param('id') id: string, @Body() addRoleDto: RoleDto) {
+    return this.userService.addRole(+id, addRoleDto.roleId);
   }
 
   @Delete(':id')
