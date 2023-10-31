@@ -5,6 +5,7 @@ import { AppModule } from './api/app/app.module';
 import { AppConfigService } from './config/app/app-config.service';
 import { SwaggerConfigService } from './config/swagger/swagger.service';
 import { HttpExceptionFilter } from './common/exception/error.exeption';
+import { ResponseOkInterceptor } from './common/interceptor/global-response.interceptor';
 
 async function bootstrap() {
   try {
@@ -22,7 +23,8 @@ async function bootstrap() {
   }
 }
 
-function configureApp(app, appConfigService, swaggerConfig) {
+function configureApp(app: INestApplication<any>, appConfigService: AppConfigService, swaggerConfig: SwaggerConfigService) {
+  app.useGlobalInterceptors(new ResponseOkInterceptor());
   app.setGlobalPrefix(appConfigService.appApiPrefix);
   app.useGlobalFilters(new HttpExceptionFilter(app.getHttpAdapter()));
   app.use(helmet({ crossOriginResourcePolicy: false }));
