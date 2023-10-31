@@ -49,6 +49,8 @@ function configureApp(
       transform: true,
       transformOptions: { enableImplicitConversion: true },
       forbidNonWhitelisted: true,
+      enableDebugMessages: true,
+      disableErrorMessages: false
     }),
   );
   swaggerConfig.init(app);
