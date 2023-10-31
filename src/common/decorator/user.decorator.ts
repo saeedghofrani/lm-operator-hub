@@ -1,16 +1,27 @@
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { UserInterface } from '../interfaces/user.interface';
 
-export const GetUser = createParamDecorator((data, request): UserInterface => {
-    const req = request.switchToHttp().getRequest();
+/**
+ * Custom param decorator to extract user information from the request.
+ * @param data - Additional data if needed (not used in this example).
+ * @param context - The Nest.js execution context.
+ * @returns User information extracted from the request.
+ */
+export const GetUser = createParamDecorator(
+  (data: any, context: ExecutionContext): UserInterface => {
+    const request = context.switchToHttp().getRequest();
     const user: UserInterface = {
-        user: req.user.userId,
+      user: request.user.userId,
     };
-    if (req.user.role) {
-        user.role = req.user.role;
+
+    // Optional: Include role and permissions if available in the request.
+    if (request.user.role) {
+      user.role = request.user.role;
     }
-    if (req.user.permissions) {
-        user.permissions = req.user.permissions;
+    if (request.user.permissions) {
+      user.permissions = request.user.permissions;
     }
+
     return user;
-});
+  },
+);

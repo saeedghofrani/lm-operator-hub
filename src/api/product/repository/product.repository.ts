@@ -49,7 +49,7 @@ export class ProductRepository extends BaseRepository<
     paginationQueryDto: PaginationQueryDto,
   ): Promise<PaginatedResult<Product>> {
     return this.paginationService.paginate(
-      this.prisma.product,
+      this.prisma.getClient().product,
       paginationQueryDto,
     );
   }

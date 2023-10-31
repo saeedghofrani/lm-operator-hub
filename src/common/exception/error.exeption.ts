@@ -23,10 +23,8 @@ import { Response } from 'express';
   PrismaClientUnknownRequestError,
   PrismaClientInitializationError,
 )
-export class HttpExceptionFilter
-  extends BaseExceptionFilter
-  implements ExceptionFilter
-{
+export class HttpExceptionFilter extends BaseExceptionFilter
+  implements ExceptionFilter {
   catch(
     exception:
       | HttpException
@@ -37,14 +35,20 @@ export class HttpExceptionFilter
       | PrismaClientInitializationError,
     host: ArgumentsHost,
   ) {
+    // Extract the HTTP response object.
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
+
+    // Determine the HTTP status and error message.
     const status = this.getHttpStatus(exception);
     const message = this.getErrorMessage(exception);
     const date = Date.now();
+
+    // Send the HTTP response.
     this.sendResponse(response, status, message, date);
   }
 
+  // Determine the appropriate HTTP status based on the exception.
   private getHttpStatus(
     exception:
       | HttpException
@@ -54,6 +58,7 @@ export class HttpExceptionFilter
       | PrismaClientUnknownRequestError
       | PrismaClientInitializationError,
   ): HttpStatus {
+    // Handle different types of exceptions.
     if (exception instanceof HttpException) {
       return exception.getStatus();
     }
@@ -75,6 +80,7 @@ export class HttpExceptionFilter
     return HttpStatus.INTERNAL_SERVER_ERROR;
   }
 
+  // Determine the error message or details based on the exception.
   private getErrorMessage(
     exception:
       | HttpException
@@ -84,6 +90,7 @@ export class HttpExceptionFilter
       | PrismaClientUnknownRequestError
       | PrismaClientInitializationError,
   ): any {
+    // Handle different types of exceptions.
     if (
       exception instanceof PrismaClientKnownRequestError ||
       PrismaClientKnownRequestError ||
@@ -100,6 +107,7 @@ export class HttpExceptionFilter
     return this.getErrorDetails(<HttpException>exception);
   }
 
+  // Determine the error details based on the HTTP status.
   private getErrorDetails(exception: HttpException): any {
     const httpStatus = exception.getStatus();
     let errorMessage: any;
@@ -121,6 +129,7 @@ export class HttpExceptionFilter
     };
   }
 
+  // Send the HTTP response.
   private sendResponse(
     response: Response,
     status: HttpStatus,

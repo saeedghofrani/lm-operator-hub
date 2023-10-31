@@ -49,7 +49,7 @@ export class RouteRepository extends BaseRepository<
     paginationQueryDto: PaginationQueryDto,
   ): Promise<PaginatedResult<Route>> {
     return this.paginationService.paginate(
-      this.prisma.route,
+      this.prisma.getClient().route,
       paginationQueryDto,
     );
   }

@@ -30,7 +30,7 @@ import { PermissionGuard } from 'src/common/guards/permission.guard';
       useFactory: (config: JwtConfigService) => ({
         secret: config.secret,
         signOptions: {
-          expiresIn: config.exp_d,
+          expiresIn: config.expirationDays,
         },
       }),
       global: true,

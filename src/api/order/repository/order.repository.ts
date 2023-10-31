@@ -49,7 +49,7 @@ export class OrderRepository extends BaseRepository<
     paginationQueryDto: PaginationQueryDto,
   ): Promise<PaginatedResult<Order>> {
     return this.paginationService.paginate(
-      this.prisma.order,
+      this.prisma.getClient().order,
       paginationQueryDto,
     );
   }
