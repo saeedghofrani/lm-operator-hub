@@ -3,6 +3,7 @@ import { PermissionService } from "src/api/permission/service/permission.service
 import { Reflector } from "@nestjs/core";
 import { IS_PUBLIC_PERMISSION_KEY } from "../constant/public-permission.constant";
 import { PermissionCache } from "../cache/permission-cache.service";
+import { $Enums } from "@prisma/client";
 
 export class PermissionGuard implements CanActivate {
     constructor(
@@ -20,28 +21,30 @@ export class PermissionGuard implements CanActivate {
         if (isPublic) {
             return true;
         }
-
+        
         const request = context.switchToHttp().getRequest();
         const permissions: number[] = request['user']['permissions'] || [];
+        const role: number = request['user']['role'] || undefined;
 
         // Ensure the user has permissions.
-        if (permissions.length < 1) {
+        if (permissions.length < 1 || !role) {
             throw new UnauthorizedException('You are not authorized');
         }
         let address: string = String(request.originalUrl).split('?')[0];
         const method = request.method;
 
         // Generate a unique cache key based on address and method
-        const cacheKey = `${address}_${method}`;
+        const cacheKey = `${address}_${method}_${role}`;
 
         // Check if the result is already cached
         const cachedPermissionId = this.permissionCache.getPermissionResult(cacheKey);
         if (cachedPermissionId !== undefined) {
             // Use the cached result
-            const access = permissions.includes(cachedPermissionId);
+            const access = permissions.includes(cachedPermissionId.id);
             if (!access) {
                 throw new ForbiddenException('Forbidden resource');
             }
+            request['user']['read'] =  cachedPermissionId.read || $Enums.ReadAccess.OWN
             return true;
         }
 
@@ -51,7 +54,7 @@ export class PermissionGuard implements CanActivate {
             return `/{${param[0]}}`;
         });
 
-        let permission = await this.permissionService.findByAddress(address, method);
+        let permission = await this.permissionService.findByAddress(address, role, method);
 
         // Restore the original address.
         address = address.replace(/\/\d+/g, (match) => {
@@ -62,16 +65,14 @@ export class PermissionGuard implements CanActivate {
         if (!permission) {
             throw new UnauthorizedException('You are not authorized');
         }
-
         // Cache the result for future use
-        this.permissionCache.cachePermissionResult(cacheKey, permission.id);
-
+        this.permissionCache.cachePermissionResult(cacheKey, {id : permission.id, read: permission.read});
         const access = permissions.includes(permission.id);
 
         if (!access) {
             throw new ForbiddenException('Forbidden resource');
         }
-
+        request['user']['read'] =  permission.read || $Enums.ReadAccess.OWN
         return true;
     }
 

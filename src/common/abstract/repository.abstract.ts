@@ -1,7 +1,9 @@
 import { PrismaService } from 'src/prisma/service/prisma.service';
+import { UserInterface } from '../interfaces/user.interface';
+import { $Enums } from '@prisma/client';
 
 export abstract class BaseRepository<T, C, A> {
-  constructor(protected prisma: PrismaService) {}
+  constructor(protected prisma: PrismaService) { }
 
   /**
    * Create a new record of the specified model.
