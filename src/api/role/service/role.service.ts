@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateRoleDto } from '../dto/create-role.dto';
 import { UpdateRoleDto } from '../dto/update-role.dto';
 import { RoleRepository } from '../repository/role.repository';
@@ -18,6 +18,11 @@ export class RoleService extends BaseService<
 
   async create(createRoleDto: CreateRoleDto) {
     try {
+      if (createRoleDto.default) {
+        const role = await this.findDefaultRole();
+        if (role) 
+          throw new ConflictException('default role already exist')
+      }
       return this.roleRepository.createRole(createRoleDto);
     } catch (error) {
       throw error;
