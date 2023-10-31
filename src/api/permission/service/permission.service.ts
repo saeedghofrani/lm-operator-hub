@@ -65,9 +65,9 @@ export class PermissionService extends BaseService<
     }
   }
 
-  async findByAddress(address: string, method: RequestMethod) {
+  async findByAddress(address: string, roleId: number, method: RequestMethod) {
     try {
-      return await this.permissionRepository.findByAddress(address, method);
+      return await this.permissionRepository.findByAddress(address, roleId, method);
     } catch (error) {
       throw error
     }

@@ -33,7 +33,7 @@ export class PermissionRepository extends BaseRepository<
     return this.findAll();
   }
 
-  findByAddress(address: string, method: RequestMethod) {
+  findByAddress(address: string, roleId: number, method: RequestMethod) {
     return this.prisma.getClient().permission.findFirst({
       where: {
         routes: {
@@ -41,10 +41,12 @@ export class PermissionRepository extends BaseRepository<
             address,
             method
           }
+        },
+        roles: {
+          some: {
+            id: roleId
+          }
         }
-      },
-      select: {
-        id: true
       }
     });
   }
