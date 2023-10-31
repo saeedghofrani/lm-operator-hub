@@ -11,7 +11,7 @@ export const GetUser = createParamDecorator(
   (data: any, context: ExecutionContext): UserInterface => {
     const request = context.switchToHttp().getRequest();
     const user: UserInterface = {
-      user: request.user.userId,
+      user: request.user.user,
     };
 
     // Optional: Include role and permissions if available in the request.
@@ -20,6 +20,9 @@ export const GetUser = createParamDecorator(
     }
     if (request.user.permissions) {
       user.permissions = request.user.permissions;
+    }
+    if (request.user.read) {
+      user.read = request.user.read;
     }
 
     return user;
