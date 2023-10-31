@@ -14,12 +14,14 @@ import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { OrderEntity } from '../entities/order.entity';
 import { OrderService } from '../service/order.service';
+import { GetUser } from 'src/common/decorator/user.decorator';
+import { UserInterface } from 'src/common/interfaces/user.interface';
 
 @Controller('order')
 @ApiTags('orders')
 @ApiBearerAuth('access-token')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) { }
 
   @Post()
   @ApiCreatedResponse({ type: OrderEntity })
@@ -27,7 +29,7 @@ export class OrderController {
     summary: 'create order',
     description: 'create order',
     operationId: 'createOrder',
-  }) 
+  })
   create(@Body() createOrderDto: CreateOrderDto) {
     return this.orderService.create(createOrderDto);
   }
@@ -37,10 +39,10 @@ export class OrderController {
   @ApiOperation({
     summary: 'find all order',
     description: 'find all order',
-    operationId: 'findAllOrder',
-  }) 
-  findAll() {
-    return this.orderService.findAll();
+    operationId: 'findAllOrder',  
+  })
+  findAll(@GetUser() userInterface: UserInterface) {
+    return this.orderService.findAll(userInterface);
   }
 
   @Get('page')

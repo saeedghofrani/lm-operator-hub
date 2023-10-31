@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Order, Product } from '@prisma/client';
 import { BaseService } from 'src/common/abstract/service.abstract';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
@@ -6,6 +6,7 @@ import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { OrderRepository } from '../repository/order.repository';
 import { ProductService } from 'src/api/product/service/product.service';
+import { UserInterface } from 'src/common/interfaces/user.interface';
 
 @Injectable()
 export class OrderService extends BaseService<
@@ -25,6 +26,8 @@ export class OrderService extends BaseService<
       const product = await this.productService.findOne(
         createOrderDto.productId,
       );
+      if (!product)
+        throw new BadRequestException('product does not exist')
       const order = this.mapToOrder(createOrderDto, product);
       return this.orderRepository.createOrder(order);
     } catch (error) {
@@ -36,6 +39,7 @@ export class OrderService extends BaseService<
     createOrderDto: CreateOrderDto,
     product: Product,
   ): CreateOrderDto {
+    createOrderDto.assignee = product.userId;
     const dueTime = this.calculateDueTime(product.durationTime);
     const order = {
       ...createOrderDto,
@@ -57,9 +61,9 @@ export class OrderService extends BaseService<
     return dueTime;
   }
 
-  async findAll() {
+  async findAll(userInterface?: UserInterface) {
     try {
-      return this.orderRepository.findAllOrder();
+      return this.orderRepository.findAllOrder(userInterface);
     } catch (error) {
       throw error;
     }

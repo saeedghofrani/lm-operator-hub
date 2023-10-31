@@ -6,7 +6,8 @@ import { BaseRepository } from 'src/common/abstract/repository.abstract';
 import { PaginatedResult } from 'src/common/pagination/interface/result.interface';
 import { PaginationService } from 'src/common/pagination/service/create.service';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
-import { Order } from '@prisma/client';
+import { $Enums, Order } from '@prisma/client';
+import { UserInterface } from 'src/common/interfaces/user.interface';
 
 @Injectable()
 export class OrderRepository extends BaseRepository<
@@ -29,8 +30,17 @@ export class OrderRepository extends BaseRepository<
     return this.create(createOrderDto);
   }
 
-  findAllOrder() {
-    return this.findAll();
+  findAllOrder(userInterface?: UserInterface) {
+    if (userInterface) {
+      if (userInterface.read === $Enums.ReadAccess.OWN) {
+        return this.prisma.getClient().order.findMany({
+          where: {
+            assignee: userInterface.user
+          }
+        })
+      }
+      return this.findAll();
+    }
   }
 
   findOneOrder(id: number) {
