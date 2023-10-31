@@ -1,6 +1,7 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { PermissionEntity } from '../entities/permission.entity';
+import { $Enums } from '@prisma/client';
 
 export class CreatePermissionDto implements Partial<PermissionEntity> {
   @ApiProperty()
@@ -18,6 +19,11 @@ export class CreatePermissionDto implements Partial<PermissionEntity> {
   @IsString()
   routeIds: string[];
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum($Enums.ReadAccess) 
+  read: $Enums.ReadAccess;
+  
   @ApiHideProperty()
   route: Record<string, any>
 
