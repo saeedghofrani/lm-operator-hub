@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
@@ -23,34 +23,64 @@ export class OrderController {
 
   @Post()
   @ApiCreatedResponse({ type: OrderEntity })
+  @ApiOperation({
+    summary: 'create order',
+    description: 'create order',
+    operationId: 'createOrder',
+  }) 
   create(@Body() createOrderDto: CreateOrderDto) {
     return this.orderService.create(createOrderDto);
   }
 
   @Get()
   @ApiOkResponse({ type: OrderEntity, isArray: true })
+  @ApiOperation({
+    summary: 'find all order',
+    description: 'find all order',
+    operationId: 'findAllOrder',
+  }) 
   findAll() {
     return this.orderService.findAll();
   }
 
   @Get('page')
+  @ApiOperation({
+    summary: 'order pagination',
+    description: 'order pagination',
+    operationId: 'paginationOrder',
+  })
   pagination(@Query() paginationQueryDto: PaginationQueryDto) {
     return this.orderService.pagination(paginationQueryDto);
   }
 
   @Get(':id')
+  @ApiOperation({
+    summary: 'find one order by id',
+    description: 'find one order by id',
+    operationId: 'findOneOrder',
+  })
   @ApiOkResponse({ type: OrderEntity })
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: 'update order by id',
+    description: 'update order by id',
+    operationId: 'updateOneOrder',
+  })
   @ApiOkResponse({ type: OrderEntity })
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.orderService.update(+id, updateOrderDto);
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'delete order by id',
+    description: 'delete order by id',
+    operationId: 'deleteOneOrder',
+  })
   @ApiOkResponse({ type: OrderEntity })
   remove(@Param('id') id: string) {
     return this.orderService.remove(+id);
