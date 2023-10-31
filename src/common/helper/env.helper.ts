@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { resolve } from 'path';
 
 /**
@@ -14,6 +15,7 @@ export function getEnvPath(): string {
   // Determine the filename based on the 'APP_MODE' or use 'development.env' as a default.
   const filename: string = env ? `${prefix}/${env}.env` : `${prefix}/development.env`;
 
+  Logger.warn(`Server is running on ${env}`, 'Running Server')
   // Resolve and return the full path to the environment file.
   return resolve(filename);
 }
