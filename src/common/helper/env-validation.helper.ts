@@ -20,5 +20,6 @@ export const validationSchema = Joi.object({
 
     // jwt
     JWT_EXP_H: Joi.number().required(),
-    JWT_SECRET: Joi.number().required(),
+    JWT_EXP_D: Joi.number().required(),
+    JWT_SECRET: Joi.string().required(),
 });
