@@ -2,11 +2,13 @@ import { CanActivate, ExecutionContext, ForbiddenException, Inject, Unauthorized
 import { PermissionService } from "src/api/permission/service/permission.service";
 import { Reflector } from "@nestjs/core";
 import { IS_PUBLIC_PERMISSION_KEY } from "../constant/public-permission.constant";
+import { PermissionCache } from "../cache/permission-cache.service";
 
 export class PermissionGuard implements CanActivate {
     constructor(
         @Inject(PermissionService) private permissionService: PermissionService,
-        private reflector: Reflector
+        private reflector: Reflector,
+        @Inject(PermissionCache) private permissionCache: PermissionCache,
     ) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -26,11 +28,24 @@ export class PermissionGuard implements CanActivate {
         if (permissions.length < 1) {
             throw new UnauthorizedException('You are not authorized');
         }
-
         let address: string = String(request.originalUrl).split('?')[0];
         const method = request.method;
 
-        // Replace dynamic segments in the address with {param}.
+        // Generate a unique cache key based on address and method
+        const cacheKey = `${address}_${method}`;
+
+        // Check if the result is already cached
+        const cachedPermissionId = this.permissionCache.getPermissionResult(cacheKey);
+        if (cachedPermissionId !== undefined) {
+            // Use the cached result
+            const access = permissions.includes(cachedPermissionId);
+            if (!access) {
+                throw new ForbiddenException('Forbidden resource');
+            }
+            return true;
+        }
+
+        // Permission is not cached; query the database
         address = address.replace(/\/\d+/g, (match) => {
             const param = this.getPropertiesByValue(request.params, match.substring(1));
             return `/{${param[0]}}`;
@@ -47,6 +62,9 @@ export class PermissionGuard implements CanActivate {
         if (!permission) {
             throw new UnauthorizedException('You are not authorized');
         }
+
+        // Cache the result for future use
+        this.permissionCache.cachePermissionResult(cacheKey, permission.id);
 
         const access = permissions.includes(permission.id);
 
