@@ -14,6 +14,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { RouteModule } from '../route/route.module';
 import { PermissionModule } from '../permission/permission.module';
 import { PermissionGuard } from 'src/common/guards/permission.guard';
+import { PermissionCache } from 'src/common/cache/permission-cache.service';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { PermissionGuard } from 'src/common/guards/permission.guard';
   ],
   controllers: [AppController],
   providers: [
+    PermissionCache,
     AppService,
     {
       provide: APP_GUARD,
