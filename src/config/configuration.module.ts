@@ -8,6 +8,7 @@ import jwtConfiguration from './jwt/jwt-configuration';
 import swaggerConfiguration from './swagger/swagger.configuration';
 import { SwaggerConfigService } from './swagger/swagger.service';
 import { JwtConfigService } from './jwt/jwt.service';
+import { validationSchema } from 'src/common/helper/env-validation.helper';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { JwtConfigService } from './jwt/jwt.service';
         swaggerConfiguration,
         jwtConfiguration,
       ],
+      validationSchema
     }),
   ],
   providers: [AppConfigService, SwaggerConfigService, JwtConfigService],
