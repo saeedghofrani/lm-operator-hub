@@ -47,6 +47,7 @@ model Order {
   orderTime   DateTime
   dueTime     DateTime
   deleted     DateTime?
+  assignee    Int
   productId   Int
   userId      Int
 }
@@ -61,9 +62,10 @@ model Role {
 }
 
 model Permission {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
+  id      Int        @id @default(autoincrement())
+  name    String     @unique
   deleted DateTime?
+  read    ReadAccess
   roles   Role[]
   routes  Route[]
 }
@@ -83,4 +85,9 @@ enum RequestMethod {
   DELETE
   PATCH
   PUT
+}
+
+enum ReadAccess {
+  OWN
+  ANY
 }
