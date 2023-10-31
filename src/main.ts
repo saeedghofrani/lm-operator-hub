@@ -1,4 +1,4 @@
-import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
+import { INestApplication, Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { AppModule } from './api/app/app.module';
@@ -27,7 +27,10 @@ async function bootstrap() {
 function configureApp(app: INestApplication<any>, appConfigService: AppConfigService, swaggerConfig: SwaggerConfigService) {
   app.useGlobalInterceptors(new ResponseOkInterceptor());
   app.setGlobalPrefix(appConfigService.appApiPrefix);
-  app.useGlobalPipes(new TrimPipe());
+  // app.useGlobalPipes(new TrimPipe());
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
   app.useGlobalFilters(new HttpExceptionFilter(app.getHttpAdapter()));
   app.use(helmet({ crossOriginResourcePolicy: false }));
   app.enableCors({ origin: '*' });
