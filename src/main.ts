@@ -5,7 +5,6 @@ import { AppModule } from './api/app/app.module';
 import { HttpExceptionFilter } from './common/exception/error.exeption';
 import { AppConfigService } from './config/app/app-config.service';
 import { SwaggerConfigService } from './config/swagger/swagger.service';
-import { ResponseOkInterceptor } from './common/interceptor/global-response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,7 +13,6 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.setGlobalPrefix(appConfigService.appApiPrefix);
   app.useGlobalFilters(new HttpExceptionFilter(httpAdapter));
-  app.useGlobalInterceptors(new ResponseOkInterceptor());
   app.use(helmet({ crossOriginResourcePolicy: false }));
   app.enableCors({ origin: '*' });
   app.useGlobalPipes(
