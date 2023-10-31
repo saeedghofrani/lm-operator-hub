@@ -17,6 +17,7 @@ export class CreateOrderDto implements Partial<OrderEntity> {
   @IsNumber()
   userId: number;
 
+  @ApiHideProperty() assignee: number;
   @ApiHideProperty() product: Record<string, any>;
   @ApiHideProperty() assignedTo: Record<string, any>;
 }

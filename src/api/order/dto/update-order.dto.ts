@@ -16,4 +16,6 @@ export class UpdateOrderDto extends PartialType(CreateOrderDto) {
   @IsNotEmpty()
   @IsNumber()
   userId: number;
+
+  @ApiHideProperty() assignee: number;
 }
