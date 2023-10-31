@@ -22,7 +22,7 @@ import { validationSchema } from 'src/common/helper/env-validation.helper';
         swaggerConfiguration,
         jwtConfiguration,
       ],
-      validationSchema
+      validationSchema,
     }),
   ],
   providers: [AppConfigService, SwaggerConfigService, JwtConfigService],

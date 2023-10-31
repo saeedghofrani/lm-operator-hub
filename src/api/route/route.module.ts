@@ -11,4 +11,4 @@ import { PaginationService } from 'src/common/pagination/service/create.service'
   providers: [RouteService, RouteRepository, PaginationService],
   exports: [RouteService],
 })
-export class RouteModule { }
+export class RouteModule {}

@@ -35,9 +35,9 @@ export class OrderRepository extends BaseRepository<
       if (userInterface.read === $Enums.ReadAccess.OWN) {
         return this.prisma.getClient().order.findMany({
           where: {
-            assignee: userInterface.user
-          }
-        })
+            assignee: userInterface.user,
+          },
+        });
       }
       return this.findAll();
     }

@@ -11,4 +11,4 @@ import { PaginationService } from 'src/common/pagination/service/create.service'
   providers: [PermissionService, PermissionRepository, PaginationService],
   exports: [PermissionService],
 })
-export class PermissionModule { }
+export class PermissionModule {}

@@ -9,7 +9,8 @@ export class PasswordHasherService {
   private readonly saltRounds: number;
 
   constructor(configService: ConfigService) {
-    this.saltRounds = Number(configService.get<number>('BCRYPT_SALT_ROUNDS')) || 10;
+    this.saltRounds =
+      Number(configService.get<number>('BCRYPT_SALT_ROUNDS')) || 10;
   }
 
   /**
@@ -27,7 +28,10 @@ export class PasswordHasherService {
    * @param hashedPassword - The hashed password to compare against.
    * @returns A promise that resolves to a boolean indicating whether the passwords match.
    */
-  async comparePasswords(plainTextPassword: string, hashedPassword: string): Promise<boolean> {
+  async comparePasswords(
+    plainTextPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
     return bcrypt.compare(plainTextPassword, hashedPassword);
   }
 }

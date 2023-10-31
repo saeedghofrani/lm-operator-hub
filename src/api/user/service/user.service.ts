@@ -30,7 +30,7 @@ export class UserService extends BaseService<
     private passwordHasher: PasswordHasherService,
     private roleService: RoleService,
     private jwtService: JwtService,
-    private permissionService: PermissionService
+    private permissionService: PermissionService,
   ) {
     super(userRepository);
   }
@@ -105,12 +105,14 @@ export class UserService extends BaseService<
       const access_token = await this.jwtService.signAsync(payload);
       return {
         access_token,
-        roles: [...user.roles.map((item) => {
-          return {
-            id: item.role.id,
-            name: item.role.name
-          }
-        })],
+        roles: [
+          ...user.roles.map((item) => {
+            return {
+              id: item.role.id,
+              name: item.role.name,
+            };
+          }),
+        ],
       };
     } catch (error) {
       throw error;
@@ -119,22 +121,24 @@ export class UserService extends BaseService<
 
   async setRole(userInterface: UserInterface, roleId: number) {
     try {
-      const user = await this.userRepository.findOneByRole(userInterface.user, roleId);
-      if (!user)
-        throw new UnauthorizedException('permission denied');
+      const user = await this.userRepository.findOneByRole(
+        userInterface.user,
+        roleId,
+      );
+      if (!user) throw new UnauthorizedException('permission denied');
 
-      const permissions = await this.permissionService.findByRole(roleId)
+      const permissions = await this.permissionService.findByRole(roleId);
       const payload: PayloadJwtInterface = {
         user: user.id,
         role: roleId,
-        permissions: permissions.map(item => item.id)
+        permissions: permissions.map((item) => item.id),
       };
       const access_token = await this.jwtService.signAsync(payload);
       return {
         access_token,
       };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

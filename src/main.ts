@@ -1,4 +1,9 @@
-import { INestApplication, Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import {
+  INestApplication,
+  Logger,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { AppModule } from './api/app/app.module';
@@ -24,7 +29,11 @@ async function bootstrap() {
   }
 }
 
-function configureApp(app: INestApplication<any>, appConfigService: AppConfigService, swaggerConfig: SwaggerConfigService) {
+function configureApp(
+  app: INestApplication<any>,
+  appConfigService: AppConfigService,
+  swaggerConfig: SwaggerConfigService,
+) {
   app.useGlobalInterceptors(new ResponseOkInterceptor());
   app.setGlobalPrefix(appConfigService.appApiPrefix);
   // app.useGlobalPipes(new TrimPipe());
@@ -45,11 +54,21 @@ function configureApp(app: INestApplication<any>, appConfigService: AppConfigSer
   swaggerConfig.init(app);
 }
 
-async function startApp(app: INestApplication<any>, appConfigService: AppConfigService, swaggerConfig: SwaggerConfigService) {
+async function startApp(
+  app: INestApplication<any>,
+  appConfigService: AppConfigService,
+  swaggerConfig: SwaggerConfigService,
+) {
   await app.listen(appConfigService.appPort);
   Logger.log('Application is running', 'Bootstrap');
-  Logger.log(`Server: http://127.0.0.1:${appConfigService.appPort}/${appConfigService.appApiPrefix}`, 'Bootstrap');
-  Logger.log(`Swagger: http://127.0.0.1:${appConfigService.appPort}/${swaggerConfig.preFix}`, 'Bootstrap');
+  Logger.log(
+    `Server: http://127.0.0.1:${appConfigService.appPort}/${appConfigService.appApiPrefix}`,
+    'Bootstrap',
+  );
+  Logger.log(
+    `Swagger: http://127.0.0.1:${appConfigService.appPort}/${swaggerConfig.preFix}`,
+    'Bootstrap',
+  );
 }
 
 bootstrap();

@@ -13,7 +13,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateRouteDto } from '../dto/create-route.dto';
@@ -25,14 +25,14 @@ import { RouteService } from '../service/route.service';
 @ApiTags('routes')
 @ApiBearerAuth('access-token')
 export class RouteController {
-  constructor(private readonly routeService: RouteService) { }
+  constructor(private readonly routeService: RouteService) {}
 
   @Post()
   @ApiOperation({
     summary: 'create route',
     description: 'create route',
     operationId: 'createRoute',
-  }) 
+  })
   @ApiCreatedResponse({ type: RouteEntity })
   create(@Body() createRouteDto: CreateRouteDto) {
     return this.routeService.create(createRouteDto);
@@ -43,7 +43,7 @@ export class RouteController {
     summary: 'find all route',
     description: 'find all route',
     operationId: 'findAllRoute',
-  }) 
+  })
   @ApiOkResponse({ type: RouteEntity, isArray: true })
   findAll() {
     return this.routeService.findAll();

@@ -8,7 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
@@ -27,7 +33,7 @@ export class ProductController {
     summary: 'create product',
     description: 'create product',
     operationId: 'createProduct',
-  }) 
+  })
   create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
   }
@@ -38,7 +44,7 @@ export class ProductController {
     summary: 'find all product',
     description: 'find all product',
     operationId: 'findAllProduct',
-  }) 
+  })
   findAll() {
     return this.productService.findAll();
   }

@@ -13,7 +13,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateRoleDto } from '../dto/create-role.dto';
@@ -32,7 +32,7 @@ export class RoleController {
     summary: 'create role',
     description: 'create role',
     operationId: 'createRole',
-  }) 
+  })
   @ApiCreatedResponse({ type: RoleEntity })
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto);
@@ -43,7 +43,7 @@ export class RoleController {
     summary: 'find all role',
     description: 'find all role',
     operationId: 'findAllRole',
-  }) 
+  })
   @ApiOkResponse({ type: RoleEntity, isArray: true })
   findAll() {
     return this.roleService.findAll();

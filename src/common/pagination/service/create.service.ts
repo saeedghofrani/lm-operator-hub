@@ -20,7 +20,8 @@ export class PaginationService {
     return async (model, paginationQueryDto: PaginationQueryDto, options) => {
       try {
         const page = Number(options?.page || defaultOptions?.page) || 1;
-        const perPage = Number(options?.perPage || defaultOptions?.perPage) || 10;
+        const perPage =
+          Number(options?.perPage || defaultOptions?.perPage) || 10;
         const skip = page > 0 ? perPage * (page - 1) : 0;
 
         // Fetch total count and paginated data concurrently.

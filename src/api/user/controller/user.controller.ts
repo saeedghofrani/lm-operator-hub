@@ -8,7 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -32,7 +38,7 @@ export class UserController {
     summary: 'create user',
     description: 'create user',
     operationId: 'createUser',
-  }) 
+  })
   @ApiCreatedResponse({ type: UserEntity })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -43,7 +49,7 @@ export class UserController {
     summary: 'find all user',
     description: 'find all user',
     operationId: 'findAllUser',
-  }) 
+  })
   @ApiOkResponse({ type: UserEntity, isArray: true })
   findAll() {
     return this.userService.findAll();
@@ -66,7 +72,7 @@ export class UserController {
     summary: 'access token by email and password',
     description: 'login api for user',
     operationId: 'login',
-  }) 
+  })
   login(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);
   }
@@ -100,7 +106,10 @@ export class UserController {
     operationId: 'updateOneUser',
   })
   @ApiOkResponse({ type: UserEntity })
-  update(@GetUser() userInterface: UserInterface, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @GetUser() userInterface: UserInterface,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.userService.update(+userInterface.user, updateUserDto);
   }
 

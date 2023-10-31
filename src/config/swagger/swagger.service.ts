@@ -64,10 +64,12 @@ export class SwaggerConfigService {
     const config = this.buildSwaggerConfig();
 
     const options: SwaggerDocumentOptions = {
-      operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+      operationIdFactory: (controllerKey: string, methodKey: string) =>
+        methodKey,
     };
 
-    const customOptions: SwaggerCustomOptions = this.buildCustomSwaggerOptions();
+    const customOptions: SwaggerCustomOptions =
+      this.buildCustomSwaggerOptions();
 
     const document = SwaggerModule.createDocument(app, config, options);
     this.writeSwaggerSpecToFile(document);

@@ -23,8 +23,10 @@ import { Response } from 'express';
   PrismaClientUnknownRequestError,
   PrismaClientInitializationError,
 )
-export class HttpExceptionFilter extends BaseExceptionFilter
-  implements ExceptionFilter {
+export class HttpExceptionFilter
+  extends BaseExceptionFilter
+  implements ExceptionFilter
+{
   catch(
     exception:
       | HttpException

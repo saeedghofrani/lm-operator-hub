@@ -26,21 +26,21 @@ export class PermissionService extends BaseService<
                 connect: { id: createPermissionDto.roleId },
               },
             },
-          ]
-        }
-      }
-      const routes = createPermissionDto.routeIds.map(item => {
+          ],
+        },
+      };
+      const routes = createPermissionDto.routeIds.map((item) => {
         return {
           route: {
             connect: { id: item },
           },
-        }
-      })
+        };
+      });
       createPermissionDto.route = {
         routes: {
-          create: [routes]
-        }
-      }
+          create: [routes],
+        },
+      };
       delete createPermissionDto.routeIds;
       delete createPermissionDto.roleId;
       return this.permissionRepository.createPermission(createPermissionDto);
@@ -67,9 +67,13 @@ export class PermissionService extends BaseService<
 
   async findByAddress(address: string, roleId: number, method: RequestMethod) {
     try {
-      return await this.permissionRepository.findByAddress(address, roleId, method);
+      return await this.permissionRepository.findByAddress(
+        address,
+        roleId,
+        method,
+      );
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -77,7 +81,7 @@ export class PermissionService extends BaseService<
     try {
       return await this.permissionRepository.findByRole(roleId);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -91,24 +95,27 @@ export class PermissionService extends BaseService<
                 connect: { id: updatePermissionDto.roleId },
               },
             },
-          ]
-        }
-      }
-      const routes = updatePermissionDto.routeIds.map(item => {
+          ],
+        },
+      };
+      const routes = updatePermissionDto.routeIds.map((item) => {
         return {
           route: {
             connect: { id: item },
           },
-        }
-      })
+        };
+      });
       updatePermissionDto.route = {
         routes: {
-          create: [routes]
-        }
-      }
+          create: [routes],
+        },
+      };
       delete updatePermissionDto.routeIds;
       delete updatePermissionDto.roleId;
-      return this.permissionRepository.updatePermission(id, updatePermissionDto);
+      return this.permissionRepository.updatePermission(
+        id,
+        updatePermissionDto,
+      );
     } catch (error) {
       throw error;
     }

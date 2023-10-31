@@ -39,15 +39,15 @@ export class PermissionRepository extends BaseRepository<
         routes: {
           some: {
             address,
-            method
-          }
+            method,
+          },
         },
         roles: {
           some: {
-            id: roleId
-          }
-        }
-      }
+            id: roleId,
+          },
+        },
+      },
     });
   }
 
@@ -56,13 +56,13 @@ export class PermissionRepository extends BaseRepository<
       where: {
         roles: {
           some: {
-            id: roleId
-          }
-        }
+            id: roleId,
+          },
+        },
       },
       select: {
-        id: true
-      }
+        id: true,
+      },
     });
   }
 

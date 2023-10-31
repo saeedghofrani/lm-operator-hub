@@ -13,9 +13,11 @@ export function getEnvPath(): string {
   const env: string | undefined = process.env.APP_MODE;
 
   // Determine the filename based on the 'APP_MODE' or use 'development.env' as a default.
-  const filename: string = env ? `${prefix}/${env}.env` : `${prefix}/development.env`;
+  const filename: string = env
+    ? `${prefix}/${env}.env`
+    : `${prefix}/development.env`;
 
-  Logger.warn(`Server is running on ${env}`, 'Running Server')
+  Logger.warn(`Server is running on ${env}`, 'Running Server');
   // Resolve and return the full path to the environment file.
   return resolve(filename);
 }

@@ -13,7 +13,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
@@ -25,7 +25,7 @@ import { PermissionService } from '../service/permission.service';
 @ApiTags('permissions')
 @ApiBearerAuth('access-token')
 export class PermissionController {
-  constructor(private readonly permissionService: PermissionService) { }
+  constructor(private readonly permissionService: PermissionService) {}
 
   @Post()
   @ApiCreatedResponse({ type: PermissionEntity })
@@ -77,7 +77,10 @@ export class PermissionController {
     operationId: 'updateOnePermission',
   })
   @ApiOkResponse({ type: PermissionEntity })
-  update(@Param('id') id: string, @Body() updatePermissionDto: UpdatePermissionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePermissionDto: UpdatePermissionDto,
+  ) {
     return this.permissionService.update(+id, updatePermissionDto);
   }
 

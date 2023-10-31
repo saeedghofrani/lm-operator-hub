@@ -8,7 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
@@ -21,7 +27,7 @@ import { UserInterface } from 'src/common/interfaces/user.interface';
 @ApiTags('orders')
 @ApiBearerAuth('access-token')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) { }
+  constructor(private readonly orderService: OrderService) {}
 
   @Post()
   @ApiCreatedResponse({ type: OrderEntity })
@@ -39,7 +45,7 @@ export class OrderController {
   @ApiOperation({
     summary: 'find all order',
     description: 'find all order',
-    operationId: 'findAllOrder',  
+    operationId: 'findAllOrder',
   })
   findAll(@GetUser() userInterface: UserInterface) {
     return this.orderService.findAll(userInterface);

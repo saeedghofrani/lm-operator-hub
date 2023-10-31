@@ -26,8 +26,7 @@ export class OrderService extends BaseService<
       const product = await this.productService.findOne(
         createOrderDto.productId,
       );
-      if (!product)
-        throw new BadRequestException('product does not exist')
+      if (!product) throw new BadRequestException('product does not exist');
       const order = this.mapToOrder(createOrderDto, product);
       return this.orderRepository.createOrder(order);
     } catch (error) {

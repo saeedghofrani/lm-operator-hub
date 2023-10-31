@@ -21,12 +21,12 @@ export class CreatePermissionDto implements Partial<PermissionEntity> {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsEnum($Enums.ReadAccess) 
+  @IsEnum($Enums.ReadAccess)
   read: $Enums.ReadAccess;
-  
-  @ApiHideProperty()
-  route: Record<string, any>
 
   @ApiHideProperty()
-  role: Record<string, any>
+  route: Record<string, any>;
+
+  @ApiHideProperty()
+  role: Record<string, any>;
 }

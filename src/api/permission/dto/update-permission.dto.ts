@@ -16,7 +16,7 @@ export class UpdatePermissionDto extends PartialType(CreatePermissionDto) {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsEnum($Enums.ReadAccess) 
+  @IsEnum($Enums.ReadAccess)
   read: $Enums.ReadAccess;
 
   @ApiProperty()

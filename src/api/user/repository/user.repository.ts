@@ -44,11 +44,11 @@ export class UserRepository extends BaseRepository<
         roles: {
           some: {
             role: {
-              id: roleId
-            }
-          }
-        }
-      }
+              id: roleId,
+            },
+          },
+        },
+      },
     });
   }
 
@@ -68,9 +68,9 @@ export class UserRepository extends BaseRepository<
               },
             },
           ],
-        }
-      }
-    })
+        },
+      },
+    });
   }
 
   removeUser(id: number) {
