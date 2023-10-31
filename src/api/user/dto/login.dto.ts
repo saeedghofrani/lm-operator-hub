@@ -10,7 +10,7 @@ import {
 export class LoginDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty({ message: 'Mobile number is required' })
+  @IsNotEmpty({ message: 'Email number is required' })
   @IsEmail()
   email: string;
 
