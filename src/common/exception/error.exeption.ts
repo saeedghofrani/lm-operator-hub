@@ -40,7 +40,7 @@ export class HttpExceptionFilter
     // Extract the HTTP response object.
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-
+    
     // Determine the HTTP status and error message.
     const status = this.getHttpStatus(exception);
     const message = this.getErrorMessage(exception);
@@ -94,12 +94,11 @@ export class HttpExceptionFilter
   ): any {
     // Handle different types of exceptions.
     if (
+      exception instanceof PrismaClientRustPanicError ||
+      exception instanceof PrismaClientValidationError ||
       exception instanceof PrismaClientKnownRequestError ||
-      PrismaClientKnownRequestError ||
-      PrismaClientRustPanicError ||
-      PrismaClientValidationError ||
-      PrismaClientUnknownRequestError ||
-      PrismaClientInitializationError
+      exception instanceof PrismaClientUnknownRequestError ||
+      exception instanceof PrismaClientInitializationError
     ) {
       return {
         msg: exception.message.replace(/\n/g, ''),
@@ -113,7 +112,6 @@ export class HttpExceptionFilter
   private getErrorDetails(exception: HttpException): any {
     const httpStatus = exception.getStatus();
     let errorMessage: any;
-
     switch (httpStatus) {
       case HttpStatus.BAD_REQUEST:
         errorMessage = exception.getResponse();
