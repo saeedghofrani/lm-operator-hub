@@ -9,7 +9,7 @@ export class PasswordHasherService {
   private readonly saltRounds: number;
 
   constructor(configService: ConfigService) {
-    this.saltRounds = configService.get('bcrypt_salt_rounds') || 10; // Replace 'bcrypt_salt_rounds' with your configuration key
+    this.saltRounds = Number(configService.get<number>('BCRYPT_SALT_ROUNDS')) || 10;
   }
 
   /**
