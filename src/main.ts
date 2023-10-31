@@ -30,6 +30,7 @@ function configureApp(app: INestApplication<any>, appConfigService: AppConfigSer
   // app.useGlobalPipes(new TrimPipe());
   app.enableVersioning({
     type: VersioningType.URI,
+    defaultVersion: '1',
   });
   app.useGlobalFilters(new HttpExceptionFilter(app.getHttpAdapter()));
   app.use(helmet({ crossOriginResourcePolicy: false }));
