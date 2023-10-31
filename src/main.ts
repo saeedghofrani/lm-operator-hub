@@ -6,6 +6,7 @@ import { AppConfigService } from './config/app/app-config.service';
 import { SwaggerConfigService } from './config/swagger/swagger.service';
 import { HttpExceptionFilter } from './common/exception/error.exeption';
 import { ResponseOkInterceptor } from './common/interceptor/global-response.interceptor';
+import { TrimPipe } from './common/pipe/trim.pipe';
 
 async function bootstrap() {
   try {
@@ -26,6 +27,7 @@ async function bootstrap() {
 function configureApp(app: INestApplication<any>, appConfigService: AppConfigService, swaggerConfig: SwaggerConfigService) {
   app.useGlobalInterceptors(new ResponseOkInterceptor());
   app.setGlobalPrefix(appConfigService.appApiPrefix);
+  app.useGlobalPipes(new TrimPipe());
   app.useGlobalFilters(new HttpExceptionFilter(app.getHttpAdapter()));
   app.use(helmet({ crossOriginResourcePolicy: false }));
   app.enableCors({ origin: '*' });
