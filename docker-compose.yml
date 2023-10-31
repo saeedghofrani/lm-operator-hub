@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  app_server:
+    container_name: app_server
+    image: app_server:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    env_file: ./src/common/envs/development.env
+    ports:
+      - '3000:3000'
+      - '48525:48525'
+    networks:
+      - app-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://127.0.0.1:3000/api/v1/health || exit 1
+      interval: 3600s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    depends_on:
+      - database
+  database:
+    container_name: app_postgres_dev
+    image: postgres:14
+    env_file: ./src/common/envs/development.env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: pg_isready
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+
+volumes:
+  postgres-data:
