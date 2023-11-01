@@ -1,12 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Order, Product } from '@prisma/client';
+import { NotificationGateway } from 'src/api/notification/gateway/notification.gatway';
+import { ProductService } from 'src/api/product/service/product.service';
 import { BaseService } from 'src/common/abstract/service.abstract';
+import { UserInterface } from 'src/common/interfaces/user.interface';
 import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { OrderRepository } from '../repository/order.repository';
-import { ProductService } from 'src/api/product/service/product.service';
-import { UserInterface } from 'src/common/interfaces/user.interface';
 
 @Injectable()
 export class OrderService extends BaseService<
@@ -17,6 +18,7 @@ export class OrderService extends BaseService<
   constructor(
     private orderRepository: OrderRepository,
     private productService: ProductService,
+    private notificationGateway:NotificationGateway
   ) {
     super(orderRepository);
   }
@@ -28,6 +30,7 @@ export class OrderService extends BaseService<
       );
       if (!product) throw new BadRequestException('product does not exist');
       const order = this.mapToOrder(createOrderDto, product);
+      await this.notificationGateway.sendMessage(JSON.stringify(order), 'order', order.assignee);
       return this.orderRepository.createOrder(order);
     } catch (error) {
       throw error;
