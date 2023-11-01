@@ -15,6 +15,7 @@ import { RouteModule } from '../route/route.module';
 import { PermissionModule } from '../permission/permission.module';
 import { PermissionGuard } from 'src/common/guards/permission.guard';
 import { PermissionCache } from 'src/common/cache/permission-cache.service';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PermissionCache } from 'src/common/cache/permission-cache.service';
     PermissionModule,
     RouteModule,
     ConfigurationModule,
+    NotificationModule,
     JwtModule.registerAsync({
       imports: [ConfigurationModule],
       inject: [JwtConfigService],
