@@ -25,8 +25,7 @@ import { Response } from 'express';
 )
 export class HttpExceptionFilter
   extends BaseExceptionFilter
-  implements ExceptionFilter
-{
+  implements ExceptionFilter {
   catch(
     exception:
       | HttpException
@@ -40,7 +39,7 @@ export class HttpExceptionFilter
     // Extract the HTTP response object.
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    
+
     // Determine the HTTP status and error message.
     const status = this.getHttpStatus(exception);
     const message = this.getErrorMessage(exception);
@@ -117,6 +116,11 @@ export class HttpExceptionFilter
         errorMessage = exception.getResponse();
         break;
       case HttpStatus.UNPROCESSABLE_ENTITY:
+        errorMessage = exception.getResponse();
+      case HttpStatus.FORBIDDEN:
+        errorMessage = exception.getResponse();
+        break;
+      case HttpStatus.UNAUTHORIZED:
         errorMessage = exception.getResponse();
         break;
       default:
