@@ -20,11 +20,13 @@ export class RoleService extends BaseService<
     try {
       if (createRoleDto.default) {
         const role = await this.findDefaultRole();
-        if (role) 
+        if (role)
           throw new ConflictException('default role already exist')
       }
       return this.roleRepository.createRole(createRoleDto);
     } catch (error) {
+      console.log(error);
+
       throw error;
     }
   }
@@ -55,6 +57,11 @@ export class RoleService extends BaseService<
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
     try {
+      if (updateRoleDto.default) {
+        const role = await this.findDefaultRole();
+        if (role)
+          throw new ConflictException('default role already exist')
+      }
       return this.roleRepository.updateRole(id, updateRoleDto);
     } catch (error) {
       throw error;
@@ -74,6 +81,7 @@ export class RoleService extends BaseService<
       if (paginationQueryDto.where) {
         let whereCondition = {
           id: +paginationQueryDto.where.id || undefined,
+          name: paginationQueryDto.where.name,
         };
         paginationQueryDto.where = whereCondition;
       }
