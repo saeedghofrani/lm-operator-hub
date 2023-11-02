@@ -73,6 +73,9 @@ export class UserService extends BaseService<
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
+      updateUserDto.password = await this.passwordHasher.hashPassword(
+        updateUserDto.password,
+      );
       return this.userRepository.updateUser(id, updateUserDto);
     } catch (error) {
       throw error;
@@ -155,6 +158,7 @@ export class UserService extends BaseService<
       if (paginationQueryDto.where) {
         let whereCondition = {
           id: +paginationQueryDto.where.id || undefined,
+          email: paginationQueryDto.where.email,
           name: paginationQueryDto.where.name,
           roles: {
             some: {
