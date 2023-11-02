@@ -56,7 +56,7 @@ export class NotificationGateway implements OnModuleInit, OnGatewayDisconnect {
         console.log(socketId);
         console.log(this.connections);
         
-        const socketConnection = this.connections.get(socketId);
+        const socketConnection = this.connections.get(socketId) || [];
         console.log(socketConnection);
         if (socketConnection.length > 0)
             socketConnection.forEach((socket) => {
