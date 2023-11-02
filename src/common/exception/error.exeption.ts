@@ -123,6 +123,9 @@ export class HttpExceptionFilter
       case HttpStatus.UNAUTHORIZED:
         errorMessage = exception.getResponse();
         break;
+      case HttpStatus.CONFLICT:
+        errorMessage = exception.getResponse();
+        break;
       default:
         errorMessage =
           'Sorry! Something went wrong on our end. Please try again later.';
