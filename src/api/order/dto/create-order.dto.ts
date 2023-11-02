@@ -1,4 +1,4 @@
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { OrderEntity } from '../entities/order.entity';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
@@ -12,9 +12,7 @@ export class CreateOrderDto implements Partial<OrderEntity> {
   @IsNumber()
   productId: number;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
+  @ApiPropertyOptional()
   userId: number;
 
   @ApiHideProperty() assignee: number;

@@ -23,13 +23,13 @@ export class OrderService extends BaseService<
     super(orderRepository);
   }
 
-  async create(createOrderDto: CreateOrderDto) {
+  async create(createOrderDto: CreateOrderDto, userInterface?: UserInterface) {
     try {
       const product = await this.productService.findOne(
         createOrderDto.productId,
       );
       if (!product) throw new BadRequestException('product does not exist');
-      const order = this.mapToOrder(createOrderDto, product);
+      const order = this.mapToOrder(createOrderDto, product, userInterface);
       await this.notificationGateway.sendMessage(JSON.stringify(order), 'order', order.assignee);
       return this.orderRepository.createOrder(order);
     } catch (error) {
@@ -40,12 +40,13 @@ export class OrderService extends BaseService<
   private mapToOrder(
     createOrderDto: CreateOrderDto,
     product: Product,
+    userInterface?: UserInterface
   ): CreateOrderDto {
     createOrderDto.assignee = product.userId;
     const dueTime = this.calculateDueTime(product.durationTime);
     const order = {
       ...createOrderDto,
-      assignedTo: { connect: { id: createOrderDto.userId } },
+      assignedTo: { connect: { id: createOrderDto.userId || userInterface.user } },
       product: { connect: { id: createOrderDto.productId } },
       orderTime: new Date(),
       orderNumber:
@@ -104,13 +105,12 @@ export class OrderService extends BaseService<
           assignedTo: {
             email: paginationQueryDto.where.email || undefined,
           },
-          dueTime: {
-            lte:
-              new Date(paginationQueryDto.where.lte).toISOString() || undefined,
-            gt:
-              new Date(paginationQueryDto.where.gt).toISOString() || undefined,
-          },
+          dueTime: {},
         };
+        if (paginationQueryDto.where.gt)
+          whereCondition.dueTime['gt'] = new Date(paginationQueryDto.where.gt).toISOString()
+          if (paginationQueryDto.where.lte)
+          whereCondition.dueTime['lte'] = new Date(paginationQueryDto.where.lte).toISOString()
         paginationQueryDto.where = whereCondition;
       }
       return this.orderRepository.pagination(paginationQueryDto);

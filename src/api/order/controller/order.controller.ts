@@ -36,8 +36,8 @@ export class OrderController {
     description: 'create order',
     operationId: 'createOrder',
   })
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
+  create(@Body() createOrderDto: CreateOrderDto, @GetUser() userInterface: UserInterface) {
+    return this.orderService.create(createOrderDto, userInterface);
   }
 
   @Get()
