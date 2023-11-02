@@ -18,6 +18,8 @@ model User {
   roles    RoleUser[]
   Product  Product[]
   Order    Order[]
+
+  @@index([email])
 }
 
 model RoleUser {
@@ -50,6 +52,8 @@ model Order {
   assignee    Int
   productId   Int
   userId      Int
+
+  @@index([assignee])
 }
 
 model Role {
