@@ -5,6 +5,7 @@ import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProductRepository } from '../repository/product.repository';
+import { UserInterface } from 'src/common/interfaces/user.interface';
 
 @Injectable()
 export class ProductService extends BaseService<
@@ -16,11 +17,11 @@ export class ProductService extends BaseService<
     super(productRepository);
   }
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, userInterface?: UserInterface) {
     try {
       createProductDto.assignee = {
         connect: {
-          id: createProductDto.userId,
+          id: createProductDto.userId || userInterface.user,
         },
       };
       delete createProductDto.userId;
@@ -73,6 +74,10 @@ export class ProductService extends BaseService<
       if (paginationQueryDto.where) {
         let whereCondition = {
           id: +paginationQueryDto.where.id || undefined,
+          name: paginationQueryDto.where.name,
+          assignee: {
+            id:  +paginationQueryDto.where.assignee
+          },
         };
         paginationQueryDto.where = whereCondition;
       }

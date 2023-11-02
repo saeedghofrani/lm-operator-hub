@@ -20,6 +20,8 @@ import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProductEntity } from '../entities/product.entity';
 import { ProductService } from '../service/product.service';
+import { GetUser } from 'src/common/decorator/user.decorator';
+import { UserInterface } from 'src/common/interfaces/user.interface';
 
 @Controller('product')
 @ApiTags('products')
@@ -34,8 +36,8 @@ export class ProductController {
     description: 'create product',
     operationId: 'createProduct',
   })
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  create(@Body() createProductDto: CreateProductDto, @GetUser() userInterface: UserInterface) {
+    return this.productService.create(createProductDto, userInterface);
   }
 
   @Get()
