@@ -18,6 +18,8 @@ model User {
   roles    RoleUser[]
   Product  Product[]
   Order    Order[]
+
+  @@index([email])
 }
 
 model RoleUser {
@@ -47,8 +49,11 @@ model Order {
   orderTime   DateTime
   dueTime     DateTime
   deleted     DateTime?
+  assignee    Int
   productId   Int
   userId      Int
+
+  @@index([assignee])
 }
 
 model Role {
@@ -61,9 +66,10 @@ model Role {
 }
 
 model Permission {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
+  id      Int        @id @default(autoincrement())
+  name    String     @unique
   deleted DateTime?
+  read    ReadAccess
   roles   Role[]
   routes  Route[]
 }
@@ -83,4 +89,9 @@ enum RequestMethod {
   DELETE
   PATCH
   PUT
+}
+
+enum ReadAccess {
+  OWN
+  ANY
 }

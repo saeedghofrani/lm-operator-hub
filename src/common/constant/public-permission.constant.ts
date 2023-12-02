@@ -1,1 +1,1 @@
-export const IS_PUBLIC_PERMISSION_KEY = 'isPublicPermission';
+export const IS_PUBLIC_PERMISSION_KEY = 'isPublicPermission'

@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  app_server:
+    container_name: app_server
+    image: app_server:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    env_file: ./src/common/envs/development.env
+    environment:
+      - DATABASE_URL="postgresql://postgres:123@postgres-host:5432/lcmarket?schema=public"
+    ports:
+      - '3000:3000'
+      - '48525:48525'
+    volumes:
+      - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "http://localhost:3000/api/v1"
+        ]
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    networks:
+      - app
+    # Resource limits (uncomment and adjust as needed)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '512M'
+
+# Named volume for node_modules (uncomment if needed)
+volumes:
+  node_modules:
+
+    # Define a custom network for communication (uncomment if needed)
+networks:
+  your_network_name:
+    external: true
