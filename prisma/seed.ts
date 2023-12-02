@@ -137,9 +137,9 @@ async function createUser(roles: { superAdminRole: Role, adminRole: Role, userRo
     where: { email: 'superAdmin@gmail.com' },
     update: {},
     create: {
-      email: 'superAdmins@gmail.com',
+      email: 'superAdmin@gmail.com',
       password,
-      username: 'superAdmins',
+      username: 'superAdmin',
       roles: {
         create: [{
           role: { connect: { id: roles.superAdminRole.id } }

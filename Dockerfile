@@ -28,7 +28,6 @@ RUN npm install
 
 # Build and seed the application
 RUN npm run build
-RUN npm run seed
 RUN npm run migrate
 RUN npm run seed
 
