@@ -1,8 +1,8 @@
 # Use a specific Node.js and Alpine Linux version
-ARG NODE_VERSION="14"
+ARG NODE_VERSION="18"
 ARG ALPINE_VERSION="3.17"
 
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS development
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS production
 
 # Install OpenSSL 1.1.x, needed for Linux Alpine 3.17+
 RUN apk update && apk add openssl1.1-compat
@@ -17,6 +17,15 @@ COPY ./src/common/envs /.env.*  ./
 COPY package*.json ./
 COPY prisma ./prisma/
 COPY swagger-spec.json ./
+COPY /.env.*  ./
+COPY package*.json ./
+COPY prisma ./prisma/
+COPY prisma/schema.prisma ./prisma/
+COPY . .
+COPY prisma ./prisma/
+
+# Install project dependencies
+RUN npm install
 
 # Install global packages and dependencies
 RUN npm install -g @nestjs/cli
@@ -35,4 +44,4 @@ RUN npm run seed
 ENV APP_PORT 3000
 ENV APP_PORT 48525
 
-CMD ["node", "dist/main"]
+CMD [ "node", "./dist/src/main.js" ]
