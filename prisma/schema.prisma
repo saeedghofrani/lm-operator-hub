@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:123@localhost:5432/lcmarket?schema=public"
+  url      = "postgresql://postgres:123@database.licensemarket.svc:5432/lcmarket"
 }
 
 model User {
