@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator'
 import { CreatePermissionDto } from './create-permission.dto'
 import { $Enums } from '@prisma/client'
 
@@ -11,8 +11,8 @@ export class UpdatePermissionDto extends PartialType(CreatePermissionDto) {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsString()
-    roleId: string
+    @IsNumber()
+    roleId: number
 
     @ApiProperty()
     @IsNotEmpty()
@@ -21,6 +21,5 @@ export class UpdatePermissionDto extends PartialType(CreatePermissionDto) {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsString()
-    routeIds: string[]
+    routeIds: number[]
 }
