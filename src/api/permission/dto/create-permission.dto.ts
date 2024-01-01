@@ -16,7 +16,6 @@ export class CreatePermissionDto implements Partial<PermissionEntity> {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsString()
     routeIds: string[]
 
     @ApiProperty()
