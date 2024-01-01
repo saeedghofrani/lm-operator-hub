@@ -12,11 +12,11 @@ export class CreatePermissionDto implements Partial<PermissionEntity> {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    roleId: string
+    roleId: number
 
     @ApiProperty()
     @IsNotEmpty()
-    routeIds: string[]
+    routeIds: number[]
 
     @ApiProperty()
     @IsNotEmpty()
