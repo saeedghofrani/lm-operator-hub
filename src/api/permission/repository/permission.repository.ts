@@ -26,6 +26,13 @@ export class PermissionRepository extends BaseRepository<
     }
 
     createPermission(createPermissionDto: CreatePermissionDto) {
+        // return await this.prisma.getClient().permission.create({
+        //     data: {
+        //         roles: {
+        //             connect: {id: 1}
+        //         }
+        //     }
+        // })
         return this.create(createPermissionDto)
     }
 

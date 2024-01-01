@@ -24,8 +24,8 @@ export class CreatePermissionDto implements Partial<PermissionEntity> {
     read: $Enums.ReadAccess
 
     @ApiHideProperty()
-    route: Record<string, any>
+    routes: Record<string, any>
 
     @ApiHideProperty()
-    role: Record<string, any>
+    roles: Record<string, any>
 }
