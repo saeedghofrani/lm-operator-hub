@@ -38,7 +38,7 @@ export class OrderController {
     })
     create(
         @Body() createOrderDto: CreateOrderDto,
-        @GetUser() userInterface: UserInterface
+        @GetUser() userInterface: UserInterface,
     ) {
         return this.orderService.create(createOrderDto, userInterface)
     }

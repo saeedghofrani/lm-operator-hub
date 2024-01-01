@@ -25,7 +25,7 @@ export class CreateUserDto implements Partial<UserEntity> {
         {
             message:
                 'Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character',
-        }
+        },
     )
     password: string
 

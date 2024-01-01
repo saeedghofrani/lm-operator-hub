@@ -16,7 +16,7 @@ import { PermissionModule } from '../permission/permission.module'
 import { PermissionGuard } from 'src/common/guards/permission.guard'
 import { PermissionCache } from 'src/common/cache/permission-cache.service'
 import { NotificationModule } from '../notification/notification.module'
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { PrismaModule } from 'src/prisma/prisma.module'
 
 @Module({
     imports: [

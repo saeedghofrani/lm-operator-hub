@@ -17,12 +17,12 @@ export class PaginationService {
      * @returns PaginateFunction for paginating data.
      */
     private createPaginator(
-        defaultOptions?: PaginateOptions
+        defaultOptions?: PaginateOptions,
     ): PaginateFunction {
         return async (
             model,
             paginationQueryDto: PaginationQueryDto,
-            options
+            options,
         ) => {
             try {
                 const page = Number(options?.page || defaultOptions?.page) || 1

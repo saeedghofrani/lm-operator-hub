@@ -21,7 +21,7 @@ import { Response } from 'express'
     PrismaClientRustPanicError,
     PrismaClientValidationError,
     PrismaClientUnknownRequestError,
-    PrismaClientInitializationError
+    PrismaClientInitializationError,
 )
 export class HttpExceptionFilter
     extends BaseExceptionFilter
@@ -35,7 +35,7 @@ export class HttpExceptionFilter
             | PrismaClientValidationError
             | PrismaClientUnknownRequestError
             | PrismaClientInitializationError,
-        host: ArgumentsHost
+        host: ArgumentsHost,
     ) {
         // Extract the HTTP response object.
         const ctx = host.switchToHttp()
@@ -58,7 +58,7 @@ export class HttpExceptionFilter
             | PrismaClientRustPanicError
             | PrismaClientValidationError
             | PrismaClientUnknownRequestError
-            | PrismaClientInitializationError
+            | PrismaClientInitializationError,
     ): HttpStatus {
         // Handle different types of exceptions.
         if (exception instanceof HttpException) {
@@ -90,7 +90,7 @@ export class HttpExceptionFilter
             | PrismaClientRustPanicError
             | PrismaClientValidationError
             | PrismaClientUnknownRequestError
-            | PrismaClientInitializationError
+            | PrismaClientInitializationError,
     ): any {
         // Handle different types of exceptions.
         if (
@@ -145,7 +145,7 @@ export class HttpExceptionFilter
         response: Response,
         status: HttpStatus,
         message: any,
-        date: number
+        date: number,
     ) {
         response.status(status).json({ ...message, timestamp: date })
     }

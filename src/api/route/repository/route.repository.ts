@@ -16,7 +16,7 @@ export class RouteRepository extends BaseRepository<
 > {
     constructor(
         protected prisma: PrismaService,
-        private paginationService: PaginationService
+        private paginationService: PaginationService,
     ) {
         super(prisma)
     }
@@ -46,11 +46,11 @@ export class RouteRepository extends BaseRepository<
     }
 
     pagination(
-        paginationQueryDto: PaginationQueryDto
+        paginationQueryDto: PaginationQueryDto,
     ): Promise<PaginatedResult<Route>> {
         return this.paginationService.paginate(
             this.prisma.getClient().route,
-            paginationQueryDto
+            paginationQueryDto,
         )
     }
 }

@@ -38,7 +38,7 @@ export class ProductController {
     })
     create(
         @Body() createProductDto: CreateProductDto,
-        @GetUser() userInterface: UserInterface
+        @GetUser() userInterface: UserInterface,
     ) {
         return this.productService.create(createProductDto, userInterface)
     }
@@ -84,7 +84,7 @@ export class ProductController {
     @ApiOkResponse({ type: ProductEntity })
     update(
         @Param('id') id: string,
-        @Body() updateProductDto: UpdateProductDto
+        @Body() updateProductDto: UpdateProductDto,
     ) {
         return this.productService.update(+id, updateProductDto)
     }

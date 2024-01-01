@@ -79,7 +79,7 @@ export class PermissionController {
     @ApiOkResponse({ type: PermissionEntity })
     update(
         @Param('id') id: string,
-        @Body() updatePermissionDto: UpdatePermissionDto
+        @Body() updatePermissionDto: UpdatePermissionDto,
     ) {
         return this.permissionService.update(+id, updatePermissionDto)
     }

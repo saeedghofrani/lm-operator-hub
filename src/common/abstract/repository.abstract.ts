@@ -42,7 +42,7 @@ export abstract class BaseRepository<T, C, A> {
      */
     async findOne(
         id: number,
-        include?: Record<string, any>
+        include?: Record<string, any>,
     ): Promise<T | null> {
         try {
             return await this.prisma.getClient()[this.modelName].findUnique({

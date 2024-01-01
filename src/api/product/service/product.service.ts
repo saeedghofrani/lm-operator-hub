@@ -19,7 +19,7 @@ export class ProductService extends BaseService<
 
     async create(
         createProductDto: CreateProductDto,
-        userInterface?: UserInterface
+        userInterface?: UserInterface,
     ) {
         try {
             createProductDto.assignee = {

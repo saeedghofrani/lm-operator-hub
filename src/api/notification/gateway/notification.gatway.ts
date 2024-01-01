@@ -29,7 +29,7 @@ export class NotificationGateway implements OnModuleInit, OnGatewayDisconnect {
             const token: string = <string>socket.handshake.headers.token
             const payload = await this.jwtService.verifyAsync(token)
             const existingConnections = this.connections.get(
-                payload.user as number
+                payload.user as number,
             )
             if (existingConnections) existingConnections.push(socket)
             else this.connections.set(payload.user as number, [socket])
@@ -43,7 +43,7 @@ export class NotificationGateway implements OnModuleInit, OnGatewayDisconnect {
         const userSockets = this.connections.get(payload.user as number)
         if (userSockets) {
             const remainingSockets = userSockets.filter(
-                (s) => s.id !== socket.id
+                (s) => s.id !== socket.id,
             )
             if (remainingSockets.length === 0) {
                 this.connections.delete(payload.user as number)

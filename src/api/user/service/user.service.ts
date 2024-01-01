@@ -30,7 +30,7 @@ export class UserService extends BaseService<
         private passwordHasher: PasswordHasherService,
         private roleService: RoleService,
         private jwtService: JwtService,
-        private permissionService: PermissionService
+        private permissionService: PermissionService,
     ) {
         super(userRepository)
     }
@@ -38,7 +38,7 @@ export class UserService extends BaseService<
     async create(createUserDto: CreateUserDto) {
         try {
             createUserDto.password = await this.passwordHasher.hashPassword(
-                createUserDto.password
+                createUserDto.password,
             )
             createUserDto.roles = {
                 create: [
@@ -77,7 +77,7 @@ export class UserService extends BaseService<
     async update(id: number, updateUserDto: UpdateUserDto) {
         try {
             updateUserDto.password = await this.passwordHasher.hashPassword(
-                updateUserDto.password
+                updateUserDto.password,
             )
             return this.userRepository.updateUser(id, updateUserDto)
         } catch (error) {
@@ -100,11 +100,11 @@ export class UserService extends BaseService<
             if (
                 !(await this.passwordHasher.comparePasswords(
                     loginDto.password,
-                    user.password
+                    user.password,
                 ))
             )
                 throw new ForbiddenException(
-                    'Username or Password is wrong ...!'
+                    'Username or Password is wrong ...!',
                 )
 
             const payload: PayloadJwtInterface = {
@@ -131,7 +131,7 @@ export class UserService extends BaseService<
         try {
             const user = await this.userRepository.findOneByRole(
                 userInterface.user,
-                roleId
+                roleId,
             )
             if (!user) throw new UnauthorizedException('permission denied')
 

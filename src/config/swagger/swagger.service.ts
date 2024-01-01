@@ -92,7 +92,7 @@ export class SwaggerConfigService {
                     bearerFormat: 'Token',
                     in: 'header',
                 },
-                'access-token'
+                'access-token',
             )
             .build()
     }

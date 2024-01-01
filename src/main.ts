@@ -32,7 +32,7 @@ async function bootstrap() {
 function configureApp(
     app: INestApplication<any>,
     appConfigService: AppConfigService,
-    swaggerConfig: SwaggerConfigService
+    swaggerConfig: SwaggerConfigService,
 ) {
     app.useGlobalInterceptors(new ResponseOkInterceptor())
     app.setGlobalPrefix(appConfigService.appApiPrefix)
@@ -51,7 +51,7 @@ function configureApp(
             forbidNonWhitelisted: true,
             enableDebugMessages: true,
             disableErrorMessages: false,
-        })
+        }),
     )
     swaggerConfig.init(app)
 }
@@ -59,17 +59,17 @@ function configureApp(
 async function startApp(
     app: INestApplication<any>,
     appConfigService: AppConfigService,
-    swaggerConfig: SwaggerConfigService
+    swaggerConfig: SwaggerConfigService,
 ) {
     await app.listen(appConfigService.appPort)
     Logger.log('Application is running', 'Bootstrap')
     Logger.log(
         `Server: http://127.0.0.1:${appConfigService.appPort}/${appConfigService.appApiPrefix}`,
-        'Bootstrap'
+        'Bootstrap',
     )
     Logger.log(
         `Swagger: http://127.0.0.1:${appConfigService.appPort}/${swaggerConfig.preFix}`,
-        'Bootstrap'
+        'Bootstrap',
     )
 }
 

@@ -108,7 +108,7 @@ export class UserController {
     @ApiOkResponse({ type: UserEntity })
     update(
         @GetUser() userInterface: UserInterface,
-        @Body() updateUserDto: UpdateUserDto
+        @Body() updateUserDto: UpdateUserDto,
     ) {
         return this.userService.update(+userInterface.user, updateUserDto)
     }

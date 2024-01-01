@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { $Enums, Permission, RequestMethod } from '@prisma/client';
-import { BaseService } from 'src/common/abstract/service.abstract';
-import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto';
-import { CreatePermissionDto } from '../dto/create-permission.dto';
-import { UpdatePermissionDto } from '../dto/update-permission.dto';
-import { PermissionRepository } from '../repository/permission.repository';
+import { Injectable } from '@nestjs/common'
+import { $Enums, Permission, RequestMethod } from '@prisma/client'
+import { BaseService } from 'src/common/abstract/service.abstract'
+import { PaginationQueryDto } from 'src/common/pagination/dto/query.dto'
+import { CreatePermissionDto } from '../dto/create-permission.dto'
+import { UpdatePermissionDto } from '../dto/update-permission.dto'
+import { PermissionRepository } from '../repository/permission.repository'
 
 @Injectable()
 export class PermissionService extends BaseService<
@@ -13,70 +13,70 @@ export class PermissionService extends BaseService<
     UpdatePermissionDto
 > {
     constructor(private permissionRepository: PermissionRepository) {
-        super(permissionRepository);
+        super(permissionRepository)
     }
 
     async create(createPermissionDto: CreatePermissionDto) {
         try {
             createPermissionDto.roles = {
                 connect: {
-                    id: Number(createPermissionDto.roleId)
+                    id: Number(createPermissionDto.roleId),
                 },
-            };
+            }
             const routes = createPermissionDto.routeIds.map((item) => {
-                return { id: Number(item) };
-            });
+                return { id: Number(item) }
+            })
             createPermissionDto.routes = {
                 connect: routes,
-            };
-            delete createPermissionDto.routeIds;
-            delete createPermissionDto.roleId;
-            console.log(createPermissionDto);
+            }
+            delete createPermissionDto.routeIds
+            delete createPermissionDto.roleId
+            console.log(createPermissionDto)
             return this.permissionRepository.createPermission(
-                createPermissionDto
-            );
+                createPermissionDto,
+            )
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
     async findAll() {
         try {
-            return this.permissionRepository.findAllPermission();
+            return this.permissionRepository.findAllPermission()
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
     async findOne(id: number) {
         try {
-            return this.permissionRepository.findOnePermission(id);
+            return this.permissionRepository.findOnePermission(id)
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
     async findByAddress(
         address: string,
         roleId: number,
-        method: RequestMethod
+        method: RequestMethod,
     ) {
         try {
             return await this.permissionRepository.findByAddress(
                 address,
                 roleId,
-                method
-            );
+                method,
+            )
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
     async findByRole(roleId: number) {
         try {
-            return await this.permissionRepository.findByRole(roleId);
+            return await this.permissionRepository.findByRole(roleId)
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
@@ -84,31 +84,31 @@ export class PermissionService extends BaseService<
         try {
             updatePermissionDto.roles = {
                 connect: {
-                    id: Number(updatePermissionDto.roleId)
+                    id: Number(updatePermissionDto.roleId),
                 },
-            };
+            }
             const routes = updatePermissionDto.routeIds.map((item) => {
-                return { id: Number(item) };
-            });
+                return { id: Number(item) }
+            })
             updatePermissionDto.routes = {
                 connect: routes,
-            };
-            delete updatePermissionDto.routeIds;
-            delete updatePermissionDto.roleId;
+            }
+            delete updatePermissionDto.routeIds
+            delete updatePermissionDto.roleId
             return this.permissionRepository.updatePermission(
                 id,
-                updatePermissionDto
-            );
+                updatePermissionDto,
+            )
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
     async remove(id: number) {
         try {
-            return this.permissionRepository.removePermission(id);
+            return this.permissionRepository.removePermission(id)
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
@@ -117,12 +117,12 @@ export class PermissionService extends BaseService<
             if (paginationQueryDto.where) {
                 let whereCondition = {
                     id: +paginationQueryDto.where.id || undefined,
-                };
-                paginationQueryDto.where = whereCondition;
+                }
+                paginationQueryDto.where = whereCondition
             }
-            return this.permissionRepository.pagination(paginationQueryDto);
+            return this.permissionRepository.pagination(paginationQueryDto)
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 }

@@ -15,14 +15,14 @@ export class PermissionGuard implements CanActivate {
     constructor(
         @Inject(PermissionService) private permissionService: PermissionService,
         private reflector: Reflector,
-        @Inject(PermissionCache) private permissionCache: PermissionCache
+        @Inject(PermissionCache) private permissionCache: PermissionCache,
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         // Check if the route is marked as public.
         const isPublic = this.reflector.getAllAndOverride<boolean>(
             IS_PUBLIC_PERMISSION_KEY,
-            [context.getHandler(), context.getClass()]
+            [context.getHandler(), context.getClass()],
         )
         if (isPublic) {
             return true
@@ -60,7 +60,7 @@ export class PermissionGuard implements CanActivate {
         address = address.replace(/\/\d+/g, (match) => {
             const param = this.getPropertiesByValue(
                 request.params,
-                match.substring(1)
+                match.substring(1),
             )
             return `/{${param[0]}}`
         })
@@ -68,14 +68,14 @@ export class PermissionGuard implements CanActivate {
         let permission = await this.permissionService.findByAddress(
             address,
             role,
-            method
+            method,
         )
 
         // Restore the original address.
         address = address.replace(/\/\d+/g, (match) => {
             const param = this.getPropertiesByValue(
                 request.params,
-                match.substring(1)
+                match.substring(1),
             )
             return `/${param[0]}`
         })

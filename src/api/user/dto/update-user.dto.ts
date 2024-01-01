@@ -24,7 +24,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
         {
             message:
                 'Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character',
-        }
+        },
     )
     password: string
 }

@@ -9,14 +9,14 @@ export class PermissionCache {
     // Cache a permission result with a given key
     cachePermissionResult(
         key: string,
-        permissionId: { id: number; read: $Enums.ReadAccess }
+        permissionId: { id: number; read: $Enums.ReadAccess },
     ): void {
         this.cache.set(key, permissionId)
     }
 
     // Retrieve a cached permission result
     getPermissionResult(
-        key: string
+        key: string,
     ): { id: number; read: $Enums.ReadAccess } | undefined {
         return this.cache.get(key)
     }

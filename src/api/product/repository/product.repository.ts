@@ -16,7 +16,7 @@ export class ProductRepository extends BaseRepository<
 > {
     constructor(
         protected prisma: PrismaService,
-        private paginationService: PaginationService
+        private paginationService: PaginationService,
     ) {
         super(prisma)
     }
@@ -46,11 +46,11 @@ export class ProductRepository extends BaseRepository<
     }
 
     pagination(
-        paginationQueryDto: PaginationQueryDto
+        paginationQueryDto: PaginationQueryDto,
     ): Promise<PaginatedResult<Product>> {
         return this.paginationService.paginate(
             this.prisma.getClient().product,
-            paginationQueryDto
+            paginationQueryDto,
         )
     }
 }

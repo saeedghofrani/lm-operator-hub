@@ -18,30 +18,30 @@ export class OrderService extends BaseService<
     constructor(
         private orderRepository: OrderRepository,
         private productService: ProductService,
-        private notificationGateway: NotificationGateway
+        private notificationGateway: NotificationGateway,
     ) {
         super(orderRepository)
     }
 
     async create(
         createOrderDto: CreateOrderDto,
-        userInterface?: UserInterface
+        userInterface?: UserInterface,
     ) {
         try {
             const product = await this.productService.findOne(
-                createOrderDto.productId
+                createOrderDto.productId,
             )
             if (!product)
                 throw new BadRequestException('product does not exist')
             const order = this.mapToOrder(
                 createOrderDto,
                 product,
-                userInterface
+                userInterface,
             )
             await this.notificationGateway.sendMessage(
                 JSON.stringify(order),
                 'order',
-                order.assignee
+                order.assignee,
             )
             return this.orderRepository.createOrder(order)
         } catch (error) {
@@ -52,7 +52,7 @@ export class OrderService extends BaseService<
     private mapToOrder(
         createOrderDto: CreateOrderDto,
         product: Product,
-        userInterface?: UserInterface
+        userInterface?: UserInterface,
     ): CreateOrderDto {
         createOrderDto.assignee = product.userId
         const dueTime = this.calculateDueTime(product.durationTime)
@@ -124,11 +124,11 @@ export class OrderService extends BaseService<
                 }
                 if (paginationQueryDto.where.gt)
                     whereCondition.dueTime['gt'] = new Date(
-                        paginationQueryDto.where.gt
+                        paginationQueryDto.where.gt,
                     ).toISOString()
                 if (paginationQueryDto.where.lte)
                     whereCondition.dueTime['lte'] = new Date(
-                        paginationQueryDto.where.lte
+                        paginationQueryDto.where.lte,
                     ).toISOString()
                 paginationQueryDto.where = whereCondition
             }
