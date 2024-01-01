@@ -22,7 +22,7 @@ export class PermissionService extends BaseService<
                 roles: {
                     create: [
                         {
-                            role: {
+                            roles: {
                                 connect: { id: createPermissionDto.roleId },
                             },
                         },
