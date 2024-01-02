@@ -31,6 +31,8 @@ export class PaginationService {
                 const skip = page > 0 ? perPage * (page - 1) : 0
 
                 // Fetch total count and paginated data concurrently.
+                if (!paginationQueryDto["where"]) paginationQueryDto["where"] = {}
+                paginationQueryDto["where"]["deleted"] = null
                 const [total, data] = await Promise.all([
                     model.count({ where: paginationQueryDto.where }),
                     model.findMany({
