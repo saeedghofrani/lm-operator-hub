@@ -25,10 +25,11 @@ export class PaginationService {
             options,
         ) => {
             try {
-                const page = Number(options?.page || defaultOptions?.page) || 1
+                const page = Number(paginationQueryDto?.page || defaultOptions?.page) || 1
                 const perPage =
-                    Number(options?.perPage || defaultOptions?.perPage) || 10
+                    Number(paginationQueryDto?.perPage || defaultOptions?.perPage) || 10
                 const skip = page > 0 ? perPage * (page - 1) : 0
+                console.log(page, perPage);
 
                 // Fetch total count and paginated data concurrently.
                 if (!paginationQueryDto["where"]) paginationQueryDto["where"] = {}
