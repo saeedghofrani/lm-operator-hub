@@ -9,7 +9,6 @@ async function main() {
   try {
     // Ensure roles exist in the database
     const roles = await ensureRolesExist();
-
     await createUser(roles);
     // Extract paths from the OpenAPI specification
     const paths = api.paths;
@@ -22,7 +21,7 @@ async function main() {
 
     // Retrieve the created routes
     const createdRoutes = await prisma.route.findMany({ });
-    
+
     // Create a permission (e.g., masterAccess) and associate it with the admin role
     await createAdminPermission(roles, createdRoutes);
   } catch (error) {
